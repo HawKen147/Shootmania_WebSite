@@ -1,10 +1,9 @@
 <?php if (!isset($_SESSION)) {
   session_start();
   if (!isset($_SESSION["utilisateur"])) {
-    header("Location://test-site/Site/view/index.php");
+    header("Location:..e/view/index.php");
   }
 };
-
 include_once("../controleur/action.php");
 ?>
 <!DOCTYPE html>

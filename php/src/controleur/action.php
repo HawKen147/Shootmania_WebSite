@@ -897,13 +897,16 @@ function derniere_ligne(){
 // test si le challong est actif ou pas
 function test_url(){
 	$url = derniere_ligne(); //recupere le dernier lien de la bdd
-	$url = implode(" ",$url);  // array to string
-	$url_1 = test_funcup_url($url);    // url funcup numero fun cup +1
-	if(bonne_page($url_1) == TRUE){
-		$url_1 = test_funcup_url($url);
-		update_funcup($url_1);
-		test_url();
-	} else {
+	if ($url != NULL){
+		$url = implode(" ",$url);  // array to string
+		$url_1 = test_funcup_url($url);    // url funcup numero fun cup +1
+		if(bonne_page($url_1) == TRUE){
+			$url_1 = test_funcup_url($url);
+			update_funcup($url_1);
+			test_url();
+		} else {
+			return affiche_challonge($url);
+		}
 		return affiche_challonge($url);
 	}
 }

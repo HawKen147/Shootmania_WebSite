@@ -12,6 +12,7 @@ create_table_player_teams();
 create_table_funcup();
 create_table_player_tournois();
 create_table_recuperation();
+test_url();
 
 ?>
 
