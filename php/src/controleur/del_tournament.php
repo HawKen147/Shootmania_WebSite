@@ -1,0 +1,15 @@
+<?php
+if(!isset($_SESSION)){
+    session_start();
+}
+include_once ("action.php");
+
+
+///////////////////////////////////////////////////////////////////////////
+////////////////// formulaire pour supprimer un tournois //////////////////
+///////////////////////////////////////////////////////////////////////////
+if(isset($_GET['del_tournament'])){
+    del_tournament($_GET['id_tournois']);
+    
+header('Location:../view/home.php');
+}

@@ -1,0 +1,820 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: Montserrat, sans-serif;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.black{
+color: black;
+}
+
+
+
+input[type=radio] {
+border: 1px solid black;
+padding: 0.5em;
+-webkit-appearance: none;
+}
+
+input[type=radio]:checked {
+background: url(https://www.aht.li/3745686/BACKGROUND_RADIO.jpg) no-repeat center center;
+background-size: 10px 10px;
+}
+
+input[type=radio]:focus {
+outline-color: transparent;
+}
+
+/* body */
+html body{
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+  background-color: (white);
+}
+
+.site-content{
+  flex: 1;
+}
+
+.container {
+    width: 100%;
+    margin: 0px;
+    padding: 0;
+      padding-top: 0px;
+      padding-right: 0px;
+      padding-bottom: 0px;
+      padding-left: 0px;
+  }
+
+  div.tunnel-header {
+    overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    height: 320px;
+    background-image: url("https://www.aht.li/3715849/shootmania_banniere.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    display: table;
+    width: 100%;
+}
+
+div.tunnel-header #logo img {  /* si on veut ajouter un logo */
+    float: left;
+    width: 120px;
+    height: 35px;
+  }
+
+  .secure .main {
+  padding-top: 80px;
+}
+
+body .main {
+  padding-top: 4%;
+}
+.identification {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    min-height: 500px;
+}
+
+.main {
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+    padding-top: 140px;
+  }
+
+.empty-cart, .identification .change-password-form .form-group.genders, .identification .identification-form .form-group.genders, 
+.identification .title-1, .identification .title-2, .identification .title-3 {
+
+    text-align: center;
+
+}
+.title-1, .title-2, .title-3, h1, h2, h3 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.title-1, h1 {
+    font-size: 26px;
+    color: #969696;
+    text-transform: uppercase;
+    line-height: 26px;
+  }
+  .title-3, h3 {
+    font-size: 22px;
+  }
+  .title-2, .title-3, h2, h3 {
+    color: #505050;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  article, aside, details, figcaption, figure, footer, h1, h2, h3, h4, h5, h6, header, menu, nav, section {
+    display: block;
+  }
+  .breadcrumb > ul > li strong, .title-1, h1, strong {
+    font-weight: 600;
+  }
+  .identification .change-password-form, .identification .identification-form {
+    max-width: 500px;
+    margin-bottom: 30px;
+    padding: 25px 0;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .sbloc, .shipping-point-choice .shipping-point-list ul {
+    margin: 0 0 22px;
+      margin-right: 0px;
+      margin-bottom: 22px;
+      margin-left: 0px;
+    display: block;
+    width: auto;
+    padding: 15px 20px;
+    max-width: none;
+  }
+  .sbloc, .shipping-point-choice .shipping-point-list ul {
+    position: relative;
+    display: table;
+    width: 100%;
+    max-width: 1210px;
+    margin: 0 auto 22px;
+    padding: 22px;
+    background: #FFF;
+  }
+  .sbloc .title-1, .sbloc .title-2, .sbloc .title-3, .shipping-point-choice .shipping-point-list ul .title-1, .shipping-point-choice .shipping-point-list ul .title-2, .shipping-point-choice .shipping-point-list ul .title-3 {
+    margin-top: 9px;
+  }
+  
+  .identification .change-password-form input, .identification .identification-form input {
+    display: inline-block;
+  }
+  .identification .identification-form .text-center.error .helper {
+    display: block;
+    text-align: center;
+  }
+    .identification .identification-form .text-center.error {
+    padding: 0 15px;
+  }
+  .identification .change-password-form .form-group, .identification .change-password-form input[type="text"], .identification 
+  .identification-form .form-group, .identification .identification-form input[type="text"] {
+    width: 100%;
+    max-width: 300px;
+  }
+  .identification .change-password-form input, .identification .identification-form input {
+    display: inline-block;
+  }
+  .form-group {
+    margin: 0 auto 10px;
+ 
+  }
+  .form-group span.helper:empty {
+    display: none;
+  }
+  .form-group span.helper {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  .form-group.mini .select-styled, .form-group.mini input:not([type="checkbox"]):not([type="radio"]) {
+    height: 40px;
+  }
+
+.form-group.mini textarea {
+  background-color: white;
+  width: auto;
+  height: 100px;
+}
+   
+
+  .identification .change-password-form input, .identification .identification-form input {
+    display: inline-block;
+  }
+  .identification .forgot-password {
+    display: block;
+    margin: 15px 0;
+    text-align: center;
+  }
+  .identification .change-password-form .button.link, .identification .change-password-form .identification .change-password-form a.button,
+   .identification .change-password-form button[type="submit"], .identification .identification-form .button.link, .identification .identification-form .identification .identification-form a.button, .identification .identification-form button[type="submit"] {
+    margin: 0 auto;
+    display: inline-block;
+  }
+  .identification .identification-sep {
+    width: 100%;
+    height: 1px;
+    margin: 25px 0;
+    background-color: #E1E1E1;
+  }
+  .form-group.mini .select-styled, .form-group.mini .select2, .form-group.mini input, .form-group.mini select, .form-group.mini.datepicker .input-group {
+    margin-bottom: 0;
+  }
+  .form-group .select-styled, .form-group .select2, .form-group input, .form-group select{
+    margin: 0 auto 10px;
+      margin-bottom: 10px;
+  }
+  .config-list li, .identification .identification-form .text-center {
+    font-weight: 400;
+  }
+  .error .helper {
+    color: #E61414;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  input, button, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  button, input, optgroup, select, textarea {
+    color: inherit;
+    font: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      font-family: inherit;
+    margin: 0;
+  }
+  input[type="date"], input[type="date"], input[type="email"], input[type="number"], input[type="password"], input[type="phone"],
+   input[type="tel"], input[type="text"], textarea {
+    line-height: 25px;
+    border: 1px solid #E1E1E1;
+    padding: 0 15px;
+    font-size: 13px;
+    margin: 0 10px 10px 0;
+    width: 100%;
+    color: #282828;
+    position: relative;
+    transition: all .3s;
+    border-radius: 0;
+    -webkit-appearance: none;
+    height: 50px;
+  }
+  input, button, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  button, input, optgroup, select, textarea {
+    color: inherit;
+    font: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      font-family: inherit;
+    margin: 0;
+      margin-top: 0px;
+      margin-right: 0px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+  }
+  .button, .link {
+    cursor: pointer;
+    /*position: relative;*/
+  }
+  .button:visited {
+    color: #FFF;
+  }
+  .button {
+    display: inline-block;
+    text-decoration: none;
+      text-decoration-line: none;
+      text-decoration-style: solid;
+      text-decoration-color: currentcolor;
+      /*text-decoration-thickness: auto;*/
+    font-size: 16px;
+    text-transform: uppercase;
+    background: #470653;
+      background-color: rgb(65, 4, 80);
+      background-position-x: 0%;
+      background-position-y: 0%;
+      background-repeat: repeat;
+      background-attachment: scroll;
+      background-image: none;
+      background-size: auto;
+      background-origin: padding-box;
+      -webkit-background-clip: border-box;
+      background-clip: border-box;
+    border-radius: 40px;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      border-bottom-right-radius: 40px;
+      border-bottom-left-radius: 40px;
+    color: #FFF;
+    padding: 10px 17px 9px;
+      padding-top: 10px;
+      padding-right: 17px;
+      padding-bottom: 9px;
+      padding-left: 17px;
+    margin: 0 10px 10px 0;
+      margin-top: 0px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      margin-left: 0px;
+    transition: all .2s;
+      transition-property: all;
+      transition-duration: 0.2s;
+      transition-timing-function: ease;
+      transition-delay: 0s;
+    text-align: center;
+    font-weight: 600;
+    -webkit-appearance: none;
+    border: 0;
+      border-top-color: currentcolor;
+      border-top-style: none;
+      border-top-width: 0px;
+      border-right-color: currentcolor;
+      border-right-style: none;
+      border-right-width: 0px;
+      border-bottom-color: currentcolor;
+      border-bottom-style: none;
+      border-bottom-width: 0px;
+      border-left-color: currentcolor;
+      border-left-style: none;
+      border-left-width: 0px;
+      border-image-outset: 0;
+      border-image-repeat: stretch;
+      border-image-slice: 100%;
+      border-image-source: none;
+      border-image-width: 1;
+  }
+  button, html input[type="button"], input[type="reset"], input[type="submit"] {
+    -webkit-appearance: button;
+    cursor: pointer;
+  }
+  button, select {
+    text-transform: none;
+  }
+  button, input, optgroup, select, textarea {
+    color: inherit;
+    font: inherit;
+      font-weight: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      font-family: inherit;
+    margin: 0;
+  }
+  button {
+    overflow: visible;
+      overflow-x: visible;
+      overflow-y: visible;
+  }
+  .button:visited {
+    color: #FFF;
+  }
+  .config-list li, .identification .identification-form .text-center {
+    font-weight: 400;
+  }
+  .text-center {
+    text-align: center !important;
+  }
+  .empty-cart, .identification .change-password-form .form-group.genders, .identification .identification-form .form-group.genders, .identification .title-1, .identification .title-2, .identification .title-3 {
+    text-align: center;
+  }
+
+/* Menu deroulant */
+
+:root{
+  --hauteur-menu: 60px;
+}
+
+nav {
+  width: 100%;
+  font-size: 23px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+nav > ul {
+  display: flex;
+  text-align: center;
+  box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.3);
+  height: var(--hauteur-menu);
+}
+ 
+nav ul {
+  list-style-type: none;
+}
+
+nav > ul > li {
+  background-color: white;
+  position: relative;
+  height: 100%;
+  flex: 1;
+}
+
+nav > ul > li > a {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+li a {
+  text-decoration: none;
+  color: black;
+}
+
+.menu-deroulant > a:after{
+  content: '>';
+  font-size: 15px;
+  margin-left: 7px;
+  display: inline-block;
+}
+
+.sous-menu {
+  margin-top: var(--hauteur-menu);
+  width: 100%;
+  text-align: left;
+  background-color: white;
+  border-radius: 2px;
+  overflow: hidden;
+  max-height: 0;
+}
+
+.sous-menu > li > a {
+  height: 50px;
+  padding-left: 20px;
+  width: 100%;
+  align-items: center;
+  display: flex;
+}
+
+nav > ul > li:hover > a{
+  color: #470653;
+}
+
+.sous-menu > li:hover {
+  background-color: rgba(33, 105, 236, 0.3);
+}
+
+.sous-menu > li:hover > a {
+  color: white;
+}
+
+@keyframes rotationFleche {
+  0% {
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(90deg);
+  }
+}
+
+.menu-deroulant:hover > a:after{
+  animation: rotationFleche 0.2s linear forwards;
+}
+
+@keyframes apparitionSousMenu {
+  0% {
+    box-shadow: 0px 3px 3px 1px rgba(0,0,0,0);
+    border-top: 3px solid #470653;
+  }
+  30% {
+    box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.3);
+  }
+  100% {
+    max-height: 50em;
+    border-top: 3px solid #470653;
+    box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.3);
+  }
+}
+
+.menu-deroulant:hover > .sous-menu {
+  animation: apparitionSousMenu 1s forwards;
+}
+
+/* affiche le bienvenue */
+
+.user{
+  display: left;
+  margin-top: 5%;
+  margin-left: 5%;
+  font-size: 50px;
+  width: auto;
+  height: 100%;
+}
+
+/* footer */
+footer{
+  width: 100%;
+  bottom: 0%; 
+  font-size: 15px;
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+.down-page{
+  left: 0;
+  width: 100%; 
+  height: 40px; 
+  background: #470653;
+}
+
+.text-footer{
+  padding-top: 10px;
+  padding-left: 10px;
+  color: white; 
+}
+
+/* affiche les tournois dans home.php */
+
+.affiche-tournois{
+  width: 100%;
+  height: 100%;
+  margin-top: 3%;
+}
+
+.affiche{
+  padding: 30px;
+  display: flex;
+  margin-left: auto; 
+
+}
+
+.affiche a {
+  color: #470653;
+  text-decoration: none;
+}
+
+.affiche a:hover {
+  color: red;
+  text-decoration: none;
+}
+
+.title{
+  font-size: 30px;
+  padding: 10px;
+}
+
+.tournois{
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 45%;
+  color: black;
+  font-size: 22px;
+  border-bottom: 0.5px solid grey;
+}
+
+.image-lim{
+  max-height: 100%;
+  max-width: 100%;
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+
+/* link page */
+.link {
+  margin-top: 100px;
+  height: 100%;
+  width: 100%;
+  display: table;
+
+}
+
+.link33{
+  width: 25%;
+  height: 100%;
+  float: right;
+  margin-right: 7.5%;
+}
+
+.link-ytub{
+  width: 20%;
+  float: right;
+  margin-right: 3%;
+  margin-left: 2%;
+}
+
+.link2{
+  display: table;
+  position: relative;
+  width: 25%;
+  height: 100%;
+  float: right;
+}
+
+.link h3 {
+  margin-bottom: 10px;  
+}
+
+.link li {
+  list-style-type: none ;
+}
+
+.link a {
+  color: #470653;
+  font-size: 23px;
+  text-align: center;
+}
+
+.link ul{
+  margin: 8px;
+  padding: 8px;
+  padding-bottom: 30px;
+}
+
+.link a:hover{
+  color: #E61414;
+}
+
+/* affiche les tournois sur toute la page ( de un tournois ) */
+
+.affiche-tournois-url{
+  float: left;
+  width: 75%;
+  height: 100%;
+  margin-top: 3%;
+  padding-bottom: 100px;
+}
+
+.affiche-url {
+  display: left;
+  margin-left: auto; 
+}
+
+.title-url {
+  font-size: 50px;
+  padding: 20px;
+}
+
+.tournois-url {
+  margin: 0 auto;
+  justify-content: left;
+  align-items: left;
+  text-align: center;
+  width: 45%;
+  color: black;
+  font-size: 30px;
+  border-bottom: 0.5px solid grey;
+}
+
+.tournois-url h3{
+  color:black;
+  font-family: Montserrat, sans-serif;
+}
+
+.image-lim-url {
+  max-height: 100%;
+  max-width: 100%;
+  padding-top: 50px;
+}
+
+/* affiche la page du profile de l'utilisateur */
+
+
+.colonne-droite{
+  margin-top: 5%;
+  float: right;
+    background-color: #470653;
+  align-items: center;
+  width: 25%;
+  height: 100%;
+}
+
+.colonne-droite .affiche-profile{
+  background-color: #470653;
+  height: 100%;
+  width: 100%;
+}
+
+.colonne-droite .user{
+  color: white;
+  width: -moz-fit-content;
+  width: fit-content; 
+  margin-top: 1%;
+  margin-left: 17%;
+  margin-bottom: 1%;
+  text-align: center;
+  font-size: larger;
+
+}
+
+.colonne-droite .reg-discord a{
+  color: white;
+  width: -moz-fit-content;
+  width: fit-content; 
+  margin-bottom: 1%;
+  margin-left: 25%;
+  text-align: center;
+  font-size: larger;
+}
+
+.colonne-droite .reg-discord a:hover{
+  color: #E61414;
+}
+
+/* gestiion des erreurs */
+
+#erreur{
+color: red;}
+
+.center {
+  text-align: center;
+}
+
+  /* modal */
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    
+  }
+
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    border: 1px solid #888;
+    width: 60%;
+    min-height: 300px;
+    max-height: 100%;
+    box-shadow: 10px 10px 2em black;
+  }
+
+
+  .modal-content fieldset {
+    margin-left: 20%;
+    margin-right: 20%; 
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .modal-content input label{
+    margin: 2%;
+    text-align: left;
+    padding: 2%;
+  }
+
+  .close {
+    color: #aaa;
+    position: relative;
+    float: right;
+    cursor: pointer;
+    font-size: 50px;
+    padding: 0 10px 0 0;
+    font-weight: bold;
+  }
+
+
+  table {
+    table-layout: fixed;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    border-collapse: collapse;
+    border: 2px solid #aaa;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+  
+  thead th:nth-child(1) {
+    width: 30%;
+  }
+  
+  thead th:nth-child(2) {
+    width: 20%;
+  }
+  
+  thead th:nth-child(3) {
+    width: 15%;
+  }
+  
+  thead th:nth-child(4) {
+    width: 35%;
+  }
+    
+  th, td {
+    padding: 7px;
+    height: 60px;
+    text-align: center;
+    border-bottom: solid black 1px;
+  }
+
+.titre-h3 {
+  margin-left: 80px;
+}
+
+.iframe h3 {
+  margin-left: 80px;
+}
+
+.iframe iframe {
+  margin-left: 10%;
+  margin-bottom: 5%;
+  border-radius: 15px;
+}

@@ -1,0 +1,14 @@
+<?php
+if(!isset($_SESSION)){
+    session_start();
+}
+include_once ("action.php");
+
+///////////////////////////////////////////////////////////////////////////
+////////////////// formulaire pour l'ajout d'un admin /////////////////////
+///////////////////////////////////////////////////////////////////////////
+if(isset($_POST['del_admin'])){
+    $user = $_POST['login'];
+    del_admin($user);
+    header('Location:/php/view/admin.php');
+}
