@@ -698,7 +698,7 @@ function affiche_team_joueur(){
 			}
 		}
 	}
-	//return $ligne;
+	return $ligne;
 }
 
 // affiche la team selectionné
