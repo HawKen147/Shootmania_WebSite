@@ -5,7 +5,7 @@ A little project for the ShootMania community
 
 Click the button below to start a new development environment:
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/gitpod-io/template-docker-compose)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/HawKen147/template-docker-compose)
 
 ## How to test the project ?
 
