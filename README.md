@@ -12,3 +12,7 @@ Then you will have a 403 forbidden (because the path of the website is not speci
 click in the URL and add at the end : /view
 
 After that you should be on the index.php page
+
+Create an account and login with the account you have created
+
+Every thing's working exept the password recovery because there is no smtp server by now
