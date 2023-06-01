@@ -22,7 +22,7 @@ include_once("../controleur/action.php");
         <div class="main identification">
             <h2 class="title-1">Register</h2>
             <div class="identification-form sblock">
-                <form action="/controleur/reg.php" method="post">
+                <form action="../controleur/reg.php" method="post">
                     <h3>Register here</h3>
                     <div class="text-center error">
                         <!-- ici mettre les codes codes erreurs de l'utilisateur qui se log -->

@@ -16,9 +16,9 @@ if (isset($_POST['login']) && isset($_POST['mot_de_passe']) && isset($_POST['con
 
 // test si l'utilisateur est deja dans la base de donnée puis inscrit l'utilisateur et l'envoie dans la page de connexion.
 if (inscrit_utilisateur($logins, $mot_de_passe, $confirmation, $email) === TRUE){
-       header('Location:/view/index.php');
+       header('Location:../view/index.php');
 } else {
-    header('Location:/view/register.php');
+    header('Location:../view/register.php');
 }
 }
 /*if (

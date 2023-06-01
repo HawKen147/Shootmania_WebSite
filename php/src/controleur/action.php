@@ -790,11 +790,6 @@ function numero_funcup(){
 function affiche_challonge($url){
 	$num_cup = numero_funcup();
 	$url = trim($url, '1234567890');
-	//$iframe = "<h3>SpeedBall Funcups n° " . $num_cup . "</h3>" . "<br>" . 
-	//	"<iframe src=" . "$url" . "$num_cup" . "/module" . " width=" . "75%" .
-	//	" height=" . "510" . " frameborder=" . "0" . " scrolling=" . "auto" . " allowtransparency=" . "false" . "></iframe>";
-	//return $iframe;
-	//var_dump($url);	
 	return array($url, $num_cup);
 }
 
@@ -852,12 +847,12 @@ function recupere_page($url){
 
 // test si la page est la bonne ou pas
 function bonne_page($url){
-	$invalide = "0 Joueur";
-	$invalide_404 = "(404)";
+	$invalide = "The page you're looking for isn't here.";
 	$result = recupere_page($url);
-	$err_404 = substr($result,0, strpos($result, $invalide_404));
+	var_dump($result);
 	$Y_est = substr($result,0, strpos($result, $invalide));
-	if($Y_est =='' && $err_404 ==''){
+	var_dump($Y_est);
+	if($Y_est ==''){
 		return TRUE;  					// c'est la bonne page
 	} else {
 		return FALSE;
