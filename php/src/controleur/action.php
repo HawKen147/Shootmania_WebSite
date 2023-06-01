@@ -6,8 +6,7 @@ use LDAP\Result;
     session_start();
 }
 include("BDD.php");
-$database_shootmania = "ShootMania";
-$database_tournament = "tournament";
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///// creer des divs puis rentrer les fonctions pour afficher les tournois /////////////////////
@@ -61,7 +60,7 @@ function create_table_funcup() {
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
 	$sql = "CREATE TABLE IF NOT EXISTS funcup (
-		`id_funcups` INT NOT NULL,
+		`id_funcups` INT NOT NULL AUTO_INCREMENT,
 		`funcups` TEXT ,
 		PRIMARY KEY (`id_funcups`))";
 	$result = mysqli_query($bdd, $sql);
@@ -767,144 +766,6 @@ function create_url_team(){
 	return $link;
 }
 
-//retourne le numero de la funcup
-function numero_funcup(){
-	global $bdd;
-	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-	$bdd->set_charset("utf8");
-	$requete = "SELECT funcups FROM funcup WHERE id_funcups = 1";
-	$resultat = $bdd->query($requete);
-	$ligne = $resultat -> fetch_assoc(); 
-	if($ligne != NULL) {
-		$url = implode(" ",$ligne);  // transforme le tableau en string
-		$num_cup = substr($url,-3,strpos($url,'cup')); // recupere les 3 derniers chiffres de l'url -> correspond au numero de la funcup
-		$num_cup = intval($num_cup); // transforme le string en int
-		return $num_cup;
-	} else {
-		return false;
-	}
-}
-
-//affiche le challonge
-function affiche_challonge($url){
-	$num_cup = numero_funcup();
-	$url = trim($url, '1234567890');
-	return array($url, $num_cup);
-}
-
-//recupere l'url funcup + 1
-function test_funcup_url($url){
-	$num_cup = numero_funcup();
-	$num_cup = $num_cup + 1;
-	$url =  trim($url, '1234567890');   	//supprime les numeros de l'url
-	$url = $url . $num_cup;
-	return $url;
-	}
-
-
-// recupere le challonge actuelle et si nouveau challonge alors on change dans la DB (table funcup)
-function update_funcup($url){
-	global $bdd;
-	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-	$bdd->set_charset("utf8");
-	$num_cup = numero_funcup();
-	if($num_cup != NULL){
-		$num_cup = $num_cup + 1;
-		$url = trim($url, '1234567890');
-		$url = $url . $num_cup;
-		$requete = "UPDATE funcup SET funcups = ('$url') WHERE id_funcups = 1";
-		$resultat = $bdd->query($requete);
-		return $resultat;
-	} else {
-		table_funcup_vide();
-	}
-}
-
-// recupere la page source web 
-function recupere_page($url){
-	//Code d'un scraper avec Curl réalisé par Insimule.com
-	//permet de récupérer le contenu d'une page
-	// User Agent
-	// recupere la page html de challonge et garde si erreur 404 dans la page source
-	$ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0';
-	$ch = curl_init();
-	if (preg_match('`^https://`i', $url)) {					//pour les URLs en HTTPS
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-	}
-	curl_setopt($ch, CURLOPT_USERAGENT, $ua);
-	curl_setopt($ch, CURLOPT_URL, $url );
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
-	// le scraper suit les redirections
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-	$result = curl_exec($ch);
-	curl_close ($ch);
-	return $result;
-}
-
-// test si la page est la bonne ou pas
-function bonne_page($url){
-	$invalide = "The page you're looking for isn't here.";
-	$result = recupere_page($url);
-	var_dump($result);
-	$Y_est = substr($result,0, strpos($result, $invalide));
-	var_dump($Y_est);
-	if($Y_est ==''){
-		return TRUE;  					// c'est la bonne page
-	} else {
-		return FALSE;
-	}
-}
-
-// ajoute l'adresse https si la bdd est vide 
-// ajoute l'indice 1 qui sert de reference pour le afficher le challonge
-function table_funcup_vide(){
-	global $bdd;
-	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-	$bdd->set_charset("utf8");
-	if(numero_funcup() == false){
-		$url = "https://speedball.challonge.com/fr/speedballfuncup195";
-		$requete = "INSERT INTO funcup VALUE (1,'$url')";
-		$resultat = $bdd->query($requete);
-	}
-	return $resultat;
-}
-
-// retourne la derniere ligne de la table
-function derniere_ligne(){
-	global $bdd;
-	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-	$bdd->set_charset("utf8");
-	$requete = "SELECT funcups FROM funcup WHERE `id_funcups` = 1";
-	$resultat = $bdd->query($requete);
-	$ligne = $resultat -> fetch_assoc();
-	if($ligne == null){
-		table_funcup_vide();
-	}
-	return $ligne;
-}
-
-// test si le challong est actif ou pas
-function test_url(){
-	$url = derniere_ligne(); //recupere le dernier lien de la bdd
-	if ($url != NULL){
-		$url = implode(" ",$url);  // array to string
-		$url_1 = test_funcup_url($url);    // url funcup numero fun cup +1
-		if(bonne_page($url_1) == TRUE){
-			$url_1 = test_funcup_url($url);
-			update_funcup($url_1);
-			test_url();
-		} else {
-			return affiche_challonge($url);
-		}
-		return affiche_challonge($url);
-	}
-}
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////// function for the database tournament ///////////////////
