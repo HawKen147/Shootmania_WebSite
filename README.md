@@ -15,4 +15,5 @@ After that you should be on the index.php page
 
 Create an account and login with the account you have created
 
-Every thing's working exept the password recovery because there is no smtp server by now
+The website is not working by now
+Its going to be fixed in the next weeks
