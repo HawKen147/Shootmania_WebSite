@@ -1,182 +1,23 @@
 <?php
-
-use LDAP\Result;
-
- if(!isset($_SESSION)){
+if(!isset($_SESSION)){
     session_start();
 }
 include("BDD.php");
-
+$database_shootmania = "ShootMania";
+$database_tournament = "tournament";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///// creer des divs puis rentrer les fonctions pour afficher les tournois /////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-// create the DB Shootmania
-function create_DB_shootmania(){
-    global $bdd;
-	global $database_shootmania;
-    $sql = "CREATE DATABASE IF NOT EXISTS $database_shootmania";
-    $result = $bdd->query($sql);
-    return $result;
+
+//envoie une la requete sql
+function sql_request ($database_name, $sql_request){
+	global $bdd;
+	mysqli_select_db($bdd, $database_name);
+	$resultat = $bdd -> query($sql_request);
+	return $resultat;
 }
-if($bdd->connect_errno ) {
-    exit();
-}
-// create the tournament DATABASE
-function create_DB_tournament(){
-    global $bdd;
-	global $database_tournament;
-    $sql = "CREATE DATABASE IF NOT EXISTS $database_tournament";
-    $result = $bdd->query($sql);
-    return $result;
-}
-if($bdd->connect_errno ) {
-    exit();
-}
-
-// creer la table utilisateur 
-function create_table_utilisateur() {
-	global $bdd;
-	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-	$sql = "CREATE TABLE IF NOT EXISTS users (
-		`logins` VARCHAR(50) NOT NULL ,
-		`mdp` VARCHAR(50) NOT NULL ,
-		`mail` VARCHAR(250) NOT NULL ,
-		`id_discord`  BIGINT NULL DEFAULT NULL ,
-		`Administrator`  INT NULL DEFAULT 0 ,
-		PRIMARY KEY (`logins`))";
-	$result = mysqli_query($bdd, $sql);
-	return $result;
-	if($bdd->connect_errno) {
-		exit();
-	}
-};
-
-// cree la table funcup
-function create_table_funcup() {
-	global $bdd;
-	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-	$sql = "CREATE TABLE IF NOT EXISTS funcup (
-		`id_funcups` INT NOT NULL AUTO_INCREMENT,
-		`funcups` TEXT ,
-		PRIMARY KEY (`id_funcups`))";
-	$result = mysqli_query($bdd, $sql);
-	return $result;
-	if($bdd->connect_errno) {
-		exit();
-	}
-};
-
-// creer la table Tournois
-function create_table_tournois() {
-	global $bdd;
-	global $database_shootmania; 
-	mysqli_select_db($bdd,$database_shootmania);
-	$sql = "CREATE TABLE IF NOT EXISTS tournois ( 
-	 `id_tournois` INT NOT NULL AUTO_INCREMENT ,
-	 `nom_tournois` VARCHAR(50) NOT NULL , 
-	 `description` TEXT NOT NULL ,
-	 `nombre_player` INT NOT NULL ,
-	 `mode` TEXT NOT NULL ,  
-	 `image` TEXT NULL DEFAULT NULL ,
-	 `link_serv` TEXT NULL DEFAULT NULL ,
-	 `time_tournament` VARCHAR(20) NOT NULL,
-	 `createur` VARCHAR(50) NOT NULL ,
-	 PRIMARY KEY (`id_tournois`))";
-	$result = mysqli_query($bdd, $sql);
-	return $result;	
-};
-
-// creer la table teams
-function create_table_team() {
-	global $bdd;
-	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-	$sql = "CREATE TABLE IF NOT EXISTS teams ( 
-	 `id_teams` INT NOT NULL AUTO_INCREMENT ,
-	 `nom_team` VARCHAR(50) NOT NULL , 
-	 `images` TEXT  ,
-	 `createur` VARCHAR(50) NOT NULL ,
-	 PRIMARY KEY (`id_teams`))";
-	$result = mysqli_query($bdd, $sql);
-	return $result;	
-};
-
-// creer la table joueur joue au tournois
-function create_table_players_plays() {
-	global $bdd;
-	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-	$sql = "CREATE TABLE IF NOT EXISTS Player_Play (
-		`id_tournois` INT NOT NULL ,
-		`nom` VARCHAR(50) NOT NULL ,
-		`description` TEXT NOT NULL ,
-		PRIMARY KEY (`id_tournois`) ,
-		CONSTRAINT FK_id_tournois FOREIGN KEY (`id_tournois`) REFERENCES tournois(`id_tournois`) ,
-		CONSTRAINT FK_id_nom FOREIGN KEY (`nom`) REFERENCES users(`login`))";
-	$result = mysqli_query($bdd, $sql);
-	return $result;	
-};
-
-// creer la table des joueurs qui sont dans une teams
-function create_table_player_teams(){
-	global $bdd;
-	mysqli_select_db($bdd,"ShootMania");
-	$sql = "CREATE TABLE IF NOT EXISTS Player_teams (
-		`login_player`  VARCHAR(50) NOT NULL ,
-		`team_name` VARCHAR(50) NOT NULL ,
-		CONSTRAINT FK_login_player FOREIGN KEY (`login_player`) REFERENCES users(`logins`) ,
-		CONSTRAINT FK_nom_team FOREIGN KEY (`team_name`) REFERENCES teams(`nom_team`))";
-	$result = mysqli_query($bdd, $sql);
-	return $result;
-}
-
-//creer la table player_tournois qui inscrit les teams dans un tournois
-function create_table_player_tournois(){
-	global $bdd;
-	mysqli_select_db($bdd,"ShootMania");
-	$sql = "CREATE TABLE IF NOT EXISTS player_tournois (
-		`id_team_tournois`  INT NOT NULL ,
-		`id_tournois_tournois` INT NOT NULL ,
-		CONSTRAINT FK_login_player FOREIGN KEY (`id_team_tournois`) REFERENCES teams(`id_teams`) ,
-		CONSTRAINT FK_id_teams FOREIGN KEY (`id_tournois_tournois`) REFERENCES tournois(`id_tournois`) )";
-	$result = mysqli_query($bdd, $sql);
-	return $result;
-}
-
-//create the table where the player will register
-function create_table_tournament_playable($nb_players, $Name_table, $name){
-	global $bdd;
-	global $database_tournament;
-	mysqli_select_db($bdd,$database_tournament);
-	$sql = "CREATE TABLE IF NOT EXISTS $Name_table (
-		`name_tournament` VARCHAR(50) NOT NULL ,
-		`id_tournois` INT NOT NULL,
-		`team` VARCHAR(50) NOT NULL, ";
-		for($i = 1; $i <= $nb_players; $i++){
-			$sql .= "`player_$i` VARCHAR(50) NOT NULL, "; //depends of the number of players
-		}
-	$sql .= " PRIMARY KEY (`id_tournois`))";
-	$result = mysqli_query($bdd, $sql);
-	return $result;
-}
-
-
-// creer la table recuperation des mots de passe
-function create_table_recuperation() {
-	global $bdd;
-	mysqli_select_db($bdd,"ShootMania");
-	$sql = "CREATE TABLE IF NOT EXISTS recuperation ( 
-	 `id_recuperation` INT NOT NULL AUTO_INCREMENT ,
-	 `logins` VARCHAR(50) NOT NULL , 
-	 `code` TEXT  ,
-	 PRIMARY KEY (`id_recuperation`))";
-	$result = mysqli_query($bdd, $sql);
-	return $result;	
-};
 
 // verifie si l'utilisateur est deja dans la base de donnée
 function login_existe_dans_la_BDD($logins){
@@ -185,7 +26,7 @@ function login_existe_dans_la_BDD($logins){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
     $bdd->set_charset("utf8");
-	$requete = "SELECT logins FROM users WHERE `logins` = '$logins'" ;
+	$requete = "SELECT logins FROM Users WHERE `logins` = '$logins'" ;
 	$resultat = $bdd->query($requete);
 	$row = $resultat->fetch_row();
 	if ($row > 0){
@@ -209,7 +50,7 @@ function mail_existe_dans_la_BDD($email){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
     $bdd->set_charset("utf8");
-	$requete = "SELECT mail FROM users WHERE `mail` = '$email'" ;
+	$requete = "SELECT mail FROM Users WHERE `mail` = '$email'" ;
 	$resultat = $bdd->query($requete);
 	$row = $resultat->fetch_row();
 	if ($row == 0){
@@ -243,7 +84,7 @@ if (login_existe_dans_la_BDD($logins) == FALSE && mail_existe_dans_la_BDD($email
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
    	$bdd->set_charset("utf8");
-	$requete = "INSERT INTO users VALUES ('$logins','$md5','$email', NULL, '0')" ;
+	$requete = "INSERT INTO Users VALUES ('$logins','$md5','$email', NULL, '0')" ;
 	$resultat = $bdd->query($requete); /////////////////////////////////////////////////?
 	$res = TRUE;
 	} else {
@@ -261,7 +102,7 @@ function connecte_utilisateur($logins, $mot_de_passe){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
     $bdd->set_charset("utf8");
-	$requete = "SELECT logins, mdp FROM users WHERE `logins` = '$logins' AND `mdp` = '$md5'" ;
+	$requete = "SELECT logins, mdp FROM Users WHERE `logins` = '$logins' AND `mdp` = '$md5'" ;
 	$resultat = $bdd->query($requete);
 	$row = $resultat->fetch_row();
 	if ($row > 0){
@@ -295,7 +136,7 @@ function ajoute_discord($discord){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
 	$bdd->set_charset("utf8");
-	$requete = "UPDATE users SET `id_discord` = $discord WHERE `logins` =  '$user'";
+	$requete = "UPDATE Users SET `id_discord` = $discord WHERE `logins` =  '$user'";
 	$resultat = $bdd->query($requete);
 	if($resultat){
 		return TRUE;
@@ -311,7 +152,7 @@ function id_discord(){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
 	$bdd->set_charset("utf8");
-	$requete = "SELECT id_discord FROM users WHERE `logins` = '$user'" ;
+	$requete = "SELECT id_discord FROM Users WHERE `logins` = '$user'" ;
 	$resultat = $bdd->query($requete);
 	while ($ligne = $resultat->fetch_assoc()) {
 		if($ligne['id_discord'] == NULL){
@@ -407,7 +248,7 @@ function User(){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
    	$bdd->set_charset("utf8");
-	$requete = "SELECT logins FROM users WHERE `logins` = '$user'" ;
+	$requete = "SELECT logins FROM Users WHERE `logins` = '$user'" ;
 	$resultat = $bdd->query($requete);
 	while ($ligne = $resultat->fetch_assoc()) {
 		echo $ligne['logins'] ;
@@ -422,7 +263,7 @@ function email(){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
    	$bdd->set_charset("utf8");
-	$requete = "SELECT mail FROM users WHERE `logins` = '$user'" ;
+	$requete = "SELECT mail FROM Users WHERE `logins` = '$user'" ;
 	$resultat = $bdd->query($requete);
 	while ($ligne = $resultat->fetch_assoc()) {
 		echo $ligne['mail'] ;
@@ -495,21 +336,20 @@ function affiche_nom_tournois() {
 
 // verifie si l'utilisateur est un administrateur
 function est_admin() {
-	$user = $_SESSION['utilisateur'];
 	global $bdd;
+	$user = $_SESSION["utilisateur"];
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
    	$bdd->set_charset("utf8");
-	$requete = "SELECT * FROM `users` WHERE logins = '$user'";
+	$requete = "SELECT Administrator FROM `users` WHERE `logins` = '$user'"; 
 	$resultat = $bdd->query($requete);
-	if ($resultat){
-		while ($ligne = $resultat->fetch_assoc()) {
-			if ($ligne["Administrator"] == '1') {
-				return TRUE;
-			}
+	$ligne = $resultat -> fetch_assoc();
+	if ($ligne ['Administrator'] == '1' ) {
+		return TRUE;
 		}
-	}
-}
+	return FALSE;
+};
+
 
 // affiche les utilisateurs qui ne sont pas admin
 // ajouté une fonction pour verifier si la personne est deja admin ou pas 
@@ -572,15 +412,6 @@ function del_admin($user){
 function est_HawKen(){
 	$user = $_SESSION["utilisateur"];
 	if ($user === "HawKen"){
-		if (!est_admin()){
-			global $bdd;
-			global $database_shootmania;
-			mysqli_select_db($bdd, $database_shootmania);
-   			$bdd->set_charset("utf8");
-			$requete = "UPDATE `users` SET `Administrator` = '1' WHERE `users`.`logins` = 'HawKen'"; 
-			$resultat = $bdd->query($requete);
-			var_dump($resultat);
-		}
 		return TRUE;
 	} else {
 		return FALSE;
@@ -697,7 +528,7 @@ function affiche_team_joueur(){
 			}
 		}
 	}
-	return $ligne;
+	//return $ligne;
 }
 
 // affiche la team selectionné
@@ -765,7 +596,6 @@ function create_url_team(){
 	$link = '?name_team=' . $name_team .  '&name=' . $user . '&invite=' . $invite . '&limit=' . $end ;
 	return $link;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 /////////////////// function for the database tournament ///////////////////
