@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once("../controleur/action.php");
+include_once("../controleur/create_tables.php");
 
 create_DB_shootmania();
 create_DB_tournament();
@@ -12,7 +12,6 @@ create_table_player_teams();
 create_table_funcup();
 create_table_player_tournois();
 create_table_recuperation();
-test_url();
 
 ?>
 
@@ -81,5 +80,4 @@ test_url();
             </div>
         </div>
 </body>
-
 </html>
