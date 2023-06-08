@@ -3,8 +3,7 @@ if(!isset($_SESSION)){
     session_start();
 }
 include("BDD.php");
-$database_shootmania = "ShootMania";
-$database_tournament = "tournament";
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///// creer des divs puis rentrer les fonctions pour afficher les tournois /////////////////////
@@ -343,10 +342,12 @@ function est_admin() {
    	$bdd->set_charset("utf8");
 	$requete = "SELECT Administrator FROM `users` WHERE `logins` = '$user'"; 
 	$resultat = $bdd->query($requete);
-	$ligne = $resultat -> fetch_assoc();
+	if ($resultat){
+		$ligne = $resultat -> fetch_assoc();
 	if ($ligne ['Administrator'] == '1' ) {
 		return TRUE;
 		}
+	}
 	return FALSE;
 };
 

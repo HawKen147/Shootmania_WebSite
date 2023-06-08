@@ -1,4 +1,5 @@
 <?php
+include ("BDD.php");
 
 // create the DB Shootmania
 function create_DB_shootmania(){

@@ -2,7 +2,9 @@
 include_once ("action.php");
 
 // Clé d'API Challonge
-$api_key = $_ENV['API_KEY'];
+$api_key = getenv('API_KEY');
+var_dump($api_key);
+exit;
 global $api_key;
 
 //url pour recuperer le tournois en passant par l'api challonge
