@@ -4,7 +4,10 @@
     header("Location:..e/view/index.php");
   }
 };
-include_once("../controleur/action.php");
+
+include_once ("../controleur/action.php");
+include_once ("../controleur/challonge-api.php");
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,9 +32,9 @@ include_once("../controleur/action.php");
     ?>
     <class id="page">
       <div class="iframe">
-        <?php list($url, $num_cup) = test_url(); ?>
+        <?php $url = test_url(); $num_cup = filter_var($url, FILTER_SANITIZE_NUMBER_INT); ?>
         <h3>SpeedBall Funcups n° <?php echo ($num_cup); ?> </h3> <br>
-        <iframe src="<?php echo ($url . $num_cup . "/module") ?>" width="80%" height="510" frameborder="0" scrolling="auto" allowtransparency="false"></iframe>
+        <iframe src="<?php echo ($url) ?>" width="80%" height="510" frameborder="0" scrolling="auto" allowtransparency="false"></iframe>
       </div>
     </class>
   </main>
@@ -43,5 +46,4 @@ include_once("../controleur/action.php");
     </div>
   </footer>
 </body>
-
 </html>
