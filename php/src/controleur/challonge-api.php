@@ -2,9 +2,7 @@
 include_once ("action.php");
 
 // Clé d'API Challonge
-$api_key = getenv('API_KEY');
-var_dump($api_key);
-exit;
+$api_key = "DcUmhuk5UPFjdhuLXw0wAv3uAGN6XC0g7Jr2DXuM";
 global $api_key;
 
 //url pour recuperer le tournois en passant par l'api challonge
@@ -46,7 +44,7 @@ function update_funcup($url){
     $row = get_nbr_funcup();
     $old_id = $row['id_funcups'];
     $id = $old_id + 1;
-    $sql = "UPDATE `funcup` SET `id_funcups`='$id',`funcups`='$url' WHERE `id_funcups` = '$old_id'";
+    $sql = "UPDATE `funcup` SET `id_funcups`='$id',`funcups` = '$url' WHERE `id_funcups` = '$old_id'";
     $resultat = sql_request($database_shootmania, $sql);
     if ($resultat){
        test_url();
@@ -108,7 +106,7 @@ function test_url(){
     $data = curl_api($new_url);
     //var_dump($data);
     //echo $data['tournament']['state'];
-    if ( $data['tournament']['state'] == 'complete' or $data['tournament']['state'] == 'underway' ){
+    if ( $data ){
         update_funcup($new_url);
     } else {
         $row =  get_nbr_funcup();

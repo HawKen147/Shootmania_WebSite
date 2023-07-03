@@ -1,7 +1,7 @@
 <?php if (!isset($_SESSION)) {
   session_start();
   if (!isset($_SESSION["utilisateur"])) {
-    header("Location://Site/view/index.php");
+    header("Location:../view/index.php");
   }
 };
 
@@ -64,7 +64,7 @@ if ($id > $last_id || $id <= 0) {
           <div class="center">
             <H3>Chose your team</H3>
             <div>
-              <form method="get" action="../controleur/team_sign_up.php">
+              <form method="get" action="/controleur/team_sign_up.php">
                 <select name="Team" id="Team" onchange="getSelectValue(this);">
                   <option value="">--Please your team--</option>
                   <?php
@@ -78,7 +78,15 @@ if ($id > $last_id || $id <= 0) {
                 </div>
                 <fieldset>
                   <legend id="nb_player">
-                    Please select <?php nb_player_tounament($_GET['id']); ?>
+                    Please select 
+                    <?php
+                      $nb_player = nb_player_tounament($_GET['id']); 
+                      if( $nb_player > 1 ){
+                        echo($nb_player . ' players for this tournament');
+                      } else {
+                        echo($nb_player . ' player for this tournament');
+                      }
+                    ?>
                   </legend>
                   <div id=team_player class="left" onclick="get_player_from_team();">
 
@@ -104,18 +112,25 @@ if ($id > $last_id || $id <= 0) {
     </div>
   <?php } ?>
 
-  <span> Team already signed up </span>
+  
   <?php
   $teams = print_team_signed_up($id);
   if ($teams) {
-    var_dump($teams);
+    ?>
+    <span> Team already signed up </span>
+    <?php
     foreach ($teams as $team) {
+      $id_team = recupere_id_team($team);
   ?>
       <div>
-        <?php echo '<a href=http://testsite/view/team.php?name_team=' . $team . '&name=' . $_SESSION['utilisateur'] . '>' . $team . '</a>'  ?>
+        <?php echo '<a href="../view/team.php?id_teams=' . $id_team . '&name=' . $_SESSION['utilisateur'] . '">' . $team . '</a>'  ?>
       </div>
   <?php
     }
+  } else {
+    ?> 
+    <span>no team registered yet </span>
+  <?php  
   }
   ?>
   </div>

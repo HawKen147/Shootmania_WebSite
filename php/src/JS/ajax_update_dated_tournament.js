@@ -4,7 +4,7 @@
 //set a timer and recharge the page every 5 minuts
 function refresh_page_dated(timeout) {
     make_request_tournament_dated('../controleur/ajax_dated_tournament.php');
-    //console.log('dated');
+    console.log('dated');
     wait_for_next_exec_dated(timeout);
 }
 
@@ -32,7 +32,7 @@ function alert_content_dated() {
             var response = httpRequest.responseText;
             document.getElementById("affiche_tournois_dated").innerHTML = response;
         } else {
-            alert('Un problème est survenu avec la requête.');
+            alert('Un problème est survenu avec la requête. dated');
         }
     }
 }

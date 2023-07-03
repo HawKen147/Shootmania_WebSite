@@ -9,7 +9,7 @@ window.onload = function () {
 //set a timer and recharge the page every 5 minuts
 function refresh_page_outdated(timeout) {
     make_request_tournament_outdated('../controleur/ajax_outdated_tournament.php');
-    //console.log('abcdefhvpqjbfvopbv');
+    console.log('abcdefhvpqjbfvopbv');
     wait_for_next_exec_outdated(timeout);
 }
 
@@ -37,8 +37,8 @@ function alert_content_outdated() {
             var response = httpRequest.responseText;
             document.getElementById("affiche_tournois_outdated").innerHTML = response;
         } else {
-            console.log(response);
-            alert('Un problème est survenu avec la requête.');
+            console.log(httpRequest.status);
+            alert('Un problème est survenu avec la requête. outdated');
         }
     }
 }

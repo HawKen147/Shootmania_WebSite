@@ -1,7 +1,7 @@
 <?php if (!isset($_SESSION)) {
   session_start();
   if (!isset($_SESSION["utilisateur"])) {
-    header("Location:..e/view/index.php");
+    header("Location:../view/index.php");
   }
 };
 
@@ -46,4 +46,5 @@ include_once ("../controleur/challonge-api.php");
     </div>
   </footer>
 </body>
+
 </html>

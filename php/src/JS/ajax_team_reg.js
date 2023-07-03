@@ -1,7 +1,7 @@
 function getSelectValue(selectValue) {
     /**On récupère l'élement html <select>*/
     var selVal = selectValue.value;
-    makeRequest('http://testsite/controleur/ajax_team.php', selVal);
+    makeRequest('../controleur/ajax_team.php', selVal);
 }
 
 function makeRequest(url, userName) {

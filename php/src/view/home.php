@@ -2,15 +2,12 @@
 if (!isset($_SESSION)) {
   session_start();
   if (!isset($_SESSION["utilisateur"])) {
-    header("/view/index.php");
+    header("Location:../view/index.php");
   };
 };
 $user = $_SESSION['utilisateur'];
 include_once("../controleur/action.php");
-if (est_admin()){
-  $_SESSION['admin'] = true;
-}
-est_HawKen();
+est_admin();
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,6 +33,9 @@ est_HawKen();
       echo ("Welcome " . $user);
       ?>
     </div>
+    <div class="titre-h3">
+      <h3> Upcoming Tournaments </h3>
+    </div>
     <table>
       <thead>
         <tr>
@@ -51,7 +51,7 @@ est_HawKen();
     </table>
 
     <div class="titre-h3">
-      <h3> out dated tournament </h3>
+      <h3> Previous Tournament </h3>
     </div>
     <table>
       <thead>

@@ -1,17 +1,12 @@
 <?php
 session_start();
 include_once("../controleur/create_tables.php");
-
-create_DB_shootmania();
-create_DB_tournament();
-create_table_utilisateur();
-create_table_tournois();
-create_table_team();
-create_table_players_plays();
-create_table_player_teams();
-create_table_funcup();
-create_table_player_tournois();
-create_table_recuperation();
+if (isset($_GET['invite']) & isset($_GET['id_teams']) & isset($_GET['limit'])){
+    $id_teams = htmlspecialchars($_GET['id_teams']);
+    $invite = htmlspecialchars($_GET['invite']);
+    $limit = htmlspecialchars($_GET['limit']);
+    $link = '?id_teams=' . $id_teams . '&invite=' . $invite . '&limit=' . $limit;
+}
 
 ?>
 
@@ -57,9 +52,8 @@ create_table_recuperation();
                         <div class="captcha-placeholder">
                         </div>
                         <a class="forgot-password" href="password_recover.php" id="partialLostPasswordLink">You lost your password ?</a>
+                        <?php if (isset($link)) { echo ('<input type="hidden" value="' . $link . '" name="link"> ');}?>
                         <input type="submit" class="button" value="connexion">
-                        <div class="form-group text-center stay-connected">
-                        </div>
                     </form>
                     <div class="identification-sep"></div>
                     <div class="new-costumer">
@@ -67,9 +61,6 @@ create_table_recuperation();
                         <a class="button" href="register.php">Register here</a>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
     </main>
@@ -80,4 +71,5 @@ create_table_recuperation();
             </div>
         </div>
 </body>
+
 </html>

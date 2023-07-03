@@ -1,68 +1,73 @@
 <?php
-
-use function PHPSTORM_META\type;
-
- if(!isset($_SESSION)){
-    session_start();
-}
 include("action.php");
 
 ///////////////////////////////////////////////////////////////////////////
 //////////////////  Crate a new Tournament  ///////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
+
 if (isset($_POST['Tournament_Name']) && isset($_POST['Tournament_Desc']) && isset($_POST['Tournament_mode'])){
     $Name = htmlspecialchars($_POST['Tournament_Name']);
     $Desc = htmlspecialchars($_POST['Tournament_Desc']);
-    $Nb_player = htmlspecialchars($_POST['Tournament_nb_player']);
+    $nb_player = htmlspecialchars($_POST['Tournament_nb_player']);
     $Mode = htmlspecialchars($_POST['Tournament_mode']);
     $Image = htmlspecialchars($_POST['Image_Tournament']);
     $Date = htmlspecialchars($_POST['time']);
-    //var_dump($Date);
     $Serv = htmlspecialchars($_POST['Serv_Link']);
     $Createur = htmlspecialchars($_SESSION["utilisateur"]);
-    
-    #transform the date from y-m-d to d-m-y
-    $Date = explode('T', $Date);
-    $date_tab_0 = replace_char_by_space($Date[0]);
-    $date_hours_tab = $Date[1];
-    $date_hours_tab = replace_char_by_space($date_hours_tab);
-    $date_tab_0 = explode(' ', $date_tab_0);
-    $Date = date_in_good_order($date_tab_0, $date_hours_tab);
-    
-    #prepare the sql request
-    if ($Image ==''){
-        $Image = "https://www.aht.li/3715849/shootmania_banniere.png";
-    }
-    if (Create_Tournament($Name, $Desc,$Nb_player, $Mode, $Image, $Date, $Serv, $Createur) == true){
-        $Name_table = replace_char_by_($Name); // replace every special char by _ if not doesn't work for the sql request
-        create_table_tournament_playable($Nb_player,$Name_table,$Name);
+    $Date = replace_char($Date);
+    $Date = date_in_good_order($Date);
+
+    if (Create_Tournament($Name, $Desc,$nb_player, $Mode, $Image, $Date, $Serv, $Createur)){
+        $id_tournois = get_last_id_tournament();
+        create_table_tournament_playable($nb_player, $id_tournois); //creer la table avec le nom du tournois.
         $_SESSION["tournament"] = true;
-        header('Location:/view/home.php');
+        header('Location:../view/home.php');
     }  else {
         $_SESSION["tournament"] = false;
-        header('Location:/view/home.php');
+        header('Location:../view/new_tournament.php');
     }
 }
 
+// create a new tournament
+function Create_Tournament($Name, $Desc, $nb_player, $Mode, $Image, $Date, $Serv, $Createur) {
+	global $database_shootmania;
+    if($Image){
+        $requete = "INSERT INTO `tournois` VALUES (`id_tournois`, '$Name', '$Desc', '$nb_player', '$Mode', '$Image', '$Serv', '$Date', '$Createur' )";
+    } else {
+        $requete = "INSERT INTO `tournois` VALUES (`id_tournois`, '$Name', '$Desc', '$nb_player', '$Mode', DEFAULT, '$Serv', '$Date', '$Createur' )";
+    }
+	$resultat = sql_request($database_shootmania,$requete);
+	return $resultat;
+};
 
-function replace_char_by_($string){
-    $string = str_replace(str_split('# :/;.,?&~"{(-|è`_\'ç^à@)]°=+}*µ$£¨ù%§<>%ù'), '_', $string);
+//replace special character for the date
+function replace_char($string){
+    $string = str_replace(str_split('# :/;.,?&~"{(-|è`_\'ç^à@)]°=+}*µ$£¨ù%§<>%ùT'), '', $string);
     return $string;
 }
 
-function replace_char_by_space($string){
-    $string = str_replace(str_split('# :/;.,?&~"{(-|è`_\'ç^à@)]°=+}*µ$£¨ù%§<>%ù'), ' ', $string);
-    return $string;
+//change the date format
+function date_in_good_order ($dateString){
+    $year = substr($dateString, 0, 4);
+    $month = substr($dateString, 4, 2);
+    $day = substr($dateString, 6, 2);
+    $hour = substr($dateString, 8, 2);
+    $minute = substr($dateString, 10, 2);
+    $dateStringFormatted = $day . '/' . $month . '/' . $year . ' ' . $hour . ':' . $minute;
+    return $dateStringFormatted;
 }
 
-function date_in_good_order ($array1, $string){
-    $year = $array1[0];
-    $day = $array1[2];
-    $tmp = $year;
-    $array1[0] = $day;
-    $array1[2] = $tmp;
-    $array1[3] = $string;
-    $string = implode(' ',$array1);
-    return $string;
+//create the table where the player will register
+function create_table_tournament_playable($nb_players, $id_tournois){
+	global $database_tournament;
+    $str_id = intval($id_tournois);
+    	$sql = "CREATE TABLE IF NOT EXISTS `$str_id` (
+		`id_team_tournois_playable` INT NOT NULL, ";
+		for($i = 1; $i <= $nb_players; $i++){
+			$sql .= "`player_$i` VARCHAR(50) NOT NULL, "; //depends of the number of players
+		}
+	$sql .= "PRIMARY KEY (`id_team_tournois_playable`))";
+	$result = sql_request($database_tournament, $sql);
+	return $result;
 }

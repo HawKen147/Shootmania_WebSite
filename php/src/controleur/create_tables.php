@@ -1,5 +1,7 @@
 <?php
-include ("BDD.php");
+
+include_once ("BDD.php");
+include_once ("action.php");
 
 // create the DB Shootmania
 function create_DB_shootmania(){
@@ -9,9 +11,7 @@ function create_DB_shootmania(){
     $result = $bdd->query($sql);
     return $result;
 }
-if($bdd->connect_errno ) {
-    exit();
-}
+
 // create the tournament DATABASE
 function create_DB_tournament(){
     global $bdd;
@@ -20,15 +20,11 @@ function create_DB_tournament(){
     $result = $bdd->query($sql);
     return $result;
 }
-if($bdd->connect_errno ) {
-    exit();
-}
+
 
 // creer la table utilisateur 
 function create_table_utilisateur() {
-	global $bdd;
 	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
 	$sql = "CREATE TABLE IF NOT EXISTS Users (
 		`logins` VARCHAR(50) NOT NULL ,
 		`mdp` VARCHAR(50) NOT NULL ,
@@ -36,69 +32,56 @@ function create_table_utilisateur() {
 		`id_discord`  BIGINT NULL DEFAULT NULL ,
 		`Administrator`  INT NULL DEFAULT 0 ,
 		PRIMARY KEY (`logins`))";
-	$result = mysqli_query($bdd, $sql);
+	$result = sql_request($database_shootmania, $sql);
 	return $result;
-	if($bdd->connect_errno) {
-		exit();
-	}
 };
 
 // cree la table funcup
 function create_table_funcup() {
-	global $bdd;
 	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
 	$sql = "CREATE TABLE IF NOT EXISTS funcup (
 		`id_funcups` INT NOT NULL,
 		`funcups` TEXT ,
 		PRIMARY KEY (`id_funcups`))";
-	$result = mysqli_query($bdd, $sql);
+	$result = sql_request($database_shootmania, $sql);
 	return $result;
-	if($bdd->connect_errno) {
-		exit();
-	}
 };
 
 // creer la table Tournois
 function create_table_tournois() {
-	global $bdd;
-	global $database_shootmania; 
-	mysqli_select_db($bdd,$database_shootmania);
+	global $database_shootmania;
 	$sql = "CREATE TABLE IF NOT EXISTS tournois ( 
 	 `id_tournois` INT NOT NULL AUTO_INCREMENT ,
 	 `nom_tournois` VARCHAR(50) NOT NULL , 
 	 `description` TEXT NOT NULL ,
 	 `nombre_player` INT NOT NULL ,
 	 `mode` TEXT NOT NULL ,  
-	 `image` TEXT NULL DEFAULT NULL ,
+	 `image` VARCHAR(16000) DEFAULT 'https://www.aht.li/3715849/shootmania_banniere.png',
 	 `link_serv` TEXT NULL DEFAULT NULL ,
-	 `time_tournament` VARCHAR(20) NOT NULL,
+	 `time_tournament` VARCHAR(20) NOT NULL ,
 	 `createur` VARCHAR(50) NOT NULL ,
 	 PRIMARY KEY (`id_tournois`))";
-	$result = mysqli_query($bdd, $sql);
+	$result = sql_request($database_shootmania, $sql);
 	return $result;	
 };
 
 // creer la table teams
 function create_table_team() {
-	global $bdd;
 	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
 	$sql = "CREATE TABLE IF NOT EXISTS teams ( 
 	 `id_teams` INT NOT NULL AUTO_INCREMENT ,
 	 `nom_team` VARCHAR(50) NOT NULL , 
-	 `images` TEXT  ,
+	 `images` VARCHAR(16000) DEFAULT 'https://www.aht.li/3733312/default.png',
+	 `creation_date` VARCHAR(50) NOT NULL,
 	 `createur` VARCHAR(50) NOT NULL ,
 	 PRIMARY KEY (`id_teams`))";
-	$result = mysqli_query($bdd, $sql);
+	$result = sql_request($database_shootmania, $sql);
 	return $result;	
 };
 
 // creer la table joueur joue au tournois
 function create_table_players_plays() {
-	global $bdd;
 	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
 	$sql = "CREATE TABLE IF NOT EXISTS Player_Play (
 		`id_tournois` INT NOT NULL ,
 		`nom` VARCHAR(50) NOT NULL ,
@@ -106,63 +89,56 @@ function create_table_players_plays() {
 		PRIMARY KEY (`id_tournois`) ,
 		CONSTRAINT FK_id_tournois FOREIGN KEY (`id_tournois`) REFERENCES tournois(`id_tournois`) ,
 		CONSTRAINT FK_id_nom FOREIGN KEY (`nom`) REFERENCES Users(`login`))";
-	$result = mysqli_query($bdd, $sql);
+	$result = sql_request($database_shootmania, $sql);
 	return $result;	
 };
 
 // creer la table des joueurs qui sont dans une teams
 function create_table_player_teams(){
-	global $bdd;
-	mysqli_select_db($bdd,"ShootMania");
+	global $database_shootmania;
 	$sql = "CREATE TABLE IF NOT EXISTS Player_teams (
 		`login_player`  VARCHAR(50) NOT NULL ,
-		`team_name` VARCHAR(50) NOT NULL ,
-		CONSTRAINT FK_login_player FOREIGN KEY (`login_player`) REFERENCES Users(`logins`) ,
-		CONSTRAINT FK_nom_team FOREIGN KEY (`team_name`) REFERENCES teams(`nom_team`))";
-	$result = mysqli_query($bdd, $sql);
+		`id_player_teams` INT NOT NULL ,
+		CONSTRAINT FK_login_player FOREIGN KEY (`login_player`) REFERENCES users(`logins`) ,
+		CONSTRAINT FK_nom_team FOREIGN KEY (`id_player_teams`) REFERENCES teams(`id_teams`))";
+	$result = sql_request($database_shootmania, $sql);
 	return $result;
 }
 
 //creer la table player_tournois qui inscrit les teams dans un tournois
 function create_table_player_tournois(){
-	global $bdd;
-	mysqli_select_db($bdd,"ShootMania");
+	global $database_shootmania;
 	$sql = "CREATE TABLE IF NOT EXISTS player_tournois (
 		`id_team_tournois`  INT NOT NULL ,
 		`id_tournois_tournois` INT NOT NULL ,
 		CONSTRAINT FK_login_player FOREIGN KEY (`id_team_tournois`) REFERENCES teams(`id_teams`) ,
 		CONSTRAINT FK_id_teams FOREIGN KEY (`id_tournois_tournois`) REFERENCES tournois(`id_tournois`) )";
-	$result = mysqli_query($bdd, $sql);
+	$result = sql_request($database_shootmania, $sql);
 	return $result;
 }
-
-//create the table where the player will register
-function create_table_tournament_playable($nb_players, $Name_table, $name){
-	global $bdd;
-	global $database_tournament;
-	mysqli_select_db($bdd,$database_tournament);
-	$sql = "CREATE TABLE IF NOT EXISTS $Name_table (
-		`name_tournament` VARCHAR(50) NOT NULL ,
-		`id_tournois` INT NOT NULL,
-		`team` VARCHAR(50) NOT NULL, ";
-		for($i = 1; $i <= $nb_players; $i++){
-			$sql .= "`player_$i` VARCHAR(50) NOT NULL, "; //depends of the number of players
-		}
-	$sql .= " PRIMARY KEY (`id_tournois`))";
-	$result = mysqli_query($bdd, $sql);
-	return $result;
-}
-
 
 // creer la table recuperation des mots de passe
 function create_table_recuperation() {
-	global $bdd;
-	mysqli_select_db($bdd,"ShootMania");
+	global $database_shootmania;
 	$sql = "CREATE TABLE IF NOT EXISTS recuperation ( 
 	 `id_recuperation` INT NOT NULL AUTO_INCREMENT ,
 	 `logins` VARCHAR(50) NOT NULL , 
 	 `code` TEXT  ,
 	 PRIMARY KEY (`id_recuperation`))";
-	$result = mysqli_query($bdd, $sql);
+		$result = sql_request($database_shootmania, $sql);
 	return $result;	
 };
+
+#############################################################
+#################### appel toutes les fonctions #############
+#############################################################
+create_DB_shootmania();
+create_DB_tournament();
+create_table_tournois();
+create_table_team ();
+create_table_players_plays();
+create_table_player_teams();
+create_table_funcup();
+create_table_player_tournois();
+create_table_recuperation();
+create_table_utilisateur();

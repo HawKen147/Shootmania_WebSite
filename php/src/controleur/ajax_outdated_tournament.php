@@ -2,23 +2,12 @@
 include_once("action.php");
 //this page get the tournament that are outated
 //they will be displayed on the home.php page
-if(isset($_SESSION['utilisateur'])){
-    $user = $_SESSION['utilisateur'];
-} else {
-    $user = '';
-}
 
-date_default_timezone_set('Europe/Paris');
-$dt = new \DateTime();
-$resultat = affiche_tournois();
-$day = $dt->format('d m Y H i');
-global $bdd;
 global $database_shootmania;
-$i = 0;
-mysqli_select_db($bdd, $database_shootmania);
-$bdd->set_charset("utf8");
+$resultat = affiche_tournois();
+$day = get_date();
 $requete = "SELECT * FROM tournois ORDER BY time_tournament DESC";
-$resultat = $bdd->query($requete);
+$resultat = sql_request($database_shootmania, $requete);
 if($resultat){
     while ($ligne = $resultat->fetch_assoc()) {
         $date = $ligne['time_tournament'];

@@ -1,7 +1,7 @@
 <?php if (!isset($_SESSION)) {
   session_start();
   if (!isset($_SESSION["utilisateur"])) {
-    header("Location://test-site/Site/php/view/index.php");
+    header("Location:../view/index.php");
   }
 };
 
@@ -18,7 +18,7 @@ include_once("../controleur/action.php");
   <header>
     <div class="container">
       <div class="tunnel-header">
-        <a id="logo" href="//test-site/Site/view/index.php">
+        <a id="logo" href="/view/index.php">
         </a>
       </div>
     </div>

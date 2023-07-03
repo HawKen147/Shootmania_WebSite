@@ -27,7 +27,6 @@ include_once("../controleur/action.php");
     <main class="site-content">
         <?php
         include("nav.php");
-        show_teams();
         ?>
         <div id="page">
 
@@ -42,7 +41,7 @@ include_once("../controleur/action.php");
                     <div class="form-group">You can use an image with the link (you can use dropbox or google drive or others) </div>
                     <div class="form-group">You can also give the link of the shootmania server where the tournament will take place. </div>
 
-                    <form action="/controleur/New_Tournament.php" method="post">
+                    <form action="../controleur/New_Tournament.php" method="post">
                         <h3>Create Your Tournament</h3>
                         <div class="text-center error">
                             <!-- ici mettre les codes codes erreurs de l'utilisateur qui se log -->
@@ -71,7 +70,7 @@ include_once("../controleur/action.php");
                             <input id="time" type="datetime-local" name="time" required>
                         </div>
                         <div class="form-group mini">
-                            <textarea placeholder="Tournament Description" name="Tournament_Desc" id="Tournament_Desc" required></textarea>
+                            <textarea placeholder="Description of the tournament" name="Tournament_Desc" id="Tournament_Desc" required></textarea>
                         </div>
                         <div class="captcha-placeholder">
                         </div>
