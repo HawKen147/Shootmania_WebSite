@@ -30,7 +30,7 @@ function sql_request ($database_name, $sql_request){
 // verifie si l'utilisateur est deja dans la base de donnée
 function login_existe_dans_la_BDD($logins){
 	global $database_shootmania;
-	$requete = "SELECT logins FROM Users WHERE `logins` = '$logins'" ;
+	$requete = "SELECT logins FROM `users` WHERE `logins` = '$logins'" ;
 	$resultat = sql_request ($database_shootmania, $requete);
 	if ($resultat){
 		$row = $resultat->fetch_row();
@@ -49,21 +49,15 @@ function login_existe_dans_la_BDD($logins){
 
 // check if the adresse mail is already in the table
 function mail_existe_dans_la_BDD($email){
-	global $bdd;
-	$res = TRUE;
 	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-    $bdd->set_charset("utf8");
-	$requete = "SELECT mail FROM Users WHERE `mail` = '$email'" ;
-	$resultat = $bdd->query($requete);
-	$row = $resultat->fetch_row();
-	if ($row == 0){
-		$res = FALSE;
-	} else {
+	$requete = "SELECT mail FROM `users` WHERE `mail` = '$email'" ;
+	$resultat = sql_request($database_shootmania, $requete);
+	if ($resultat) {
 		$_SESSION['erreur_mail'] = $email;
-		$res = TRUE;
-	}
-	return $res;
+		return True;
+	} else {
+		return FALSE;
+	}	
 };
 
 
@@ -81,21 +75,17 @@ function password_confirm($mot_de_passe, $confirmation){
 
 // ajoute un utilisateur a la base 
 function inscrit_utilisateur($logins, $mot_de_passe, $confirmation, $email) {
-if (login_existe_dans_la_BDD($logins) == FALSE && mail_existe_dans_la_BDD($email) == FALSE && password_confirm($mot_de_passe, $confirmation) == TRUE){     // verify that mail, login are not already taken and password / password confirm are not differents
-	$salt= "@|-°+==00001ddQ";
-	$md5 = md5($mot_de_passe . $salt . $logins .  $salt . $logins . $logins); // cache le mdp dans la base de donnée
-	global $bdd;
-	global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
-   	$bdd->set_charset("utf8");
-	$requete = "INSERT INTO Users VALUES ('$logins','$md5','$email', NULL, '0')" ;
-	$resultat = $bdd->query($requete); /////////////////////////////////////////////////?
-	$res = TRUE;
-	} else {
-		header('Location:formulaire_reg.php');
+	if (login_existe_dans_la_BDD($logins) == FALSE && mail_existe_dans_la_BDD($email) == FALSE && password_confirm($mot_de_passe, $confirmation) == TRUE){     // verify that mail, login are not already taken and password / password confirm are not differents
+		global $database_shootmania;
+		$salt= "@|-°+==00001ddQ";
+		$md5 = md5($mot_de_passe . $salt . $logins .  $salt . $logins . $logins); // cache le mdp dans la base de donnée
+		$requete = "INSERT INTO us`users`ers VALUES ('$logins','$md5','$email', NULL, '0')" ;
+		$resultat = sql_request($database_shootmania, $requete); 
+		if ($resultat){
+			return TRUE;
+		}
 	}
-	return $res;
-};
+}
 
 //connect un utilisateur au site.
 function connecte_utilisateur($logins, $mot_de_passe){
@@ -103,7 +93,7 @@ function connecte_utilisateur($logins, $mot_de_passe){
 	$res = FALSE;
 	$salt= "@|-°+==00001ddQ";
 	$md5 = md5( $mot_de_passe . $salt . $logins .  $salt . $logins . $logins  ); // cache le mdp dans la base de donnée
-	$requete = "SELECT logins, mdp FROM Users WHERE `logins` = '$logins' AND `mdp` = '$md5'" ;
+	$requete = "SELECT logins, mdp FROM `users` WHERE `logins` = '$logins' AND `mdp` = '$md5'" ;
 	$resultat = sql_request($database_shootmania, $requete);
 	if ($resultat){
 		$row = $resultat->fetch_row();
@@ -139,7 +129,7 @@ function ajoute_discord($discord){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
 	$bdd->set_charset("utf8");
-	$requete = "UPDATE Users SET `id_discord` = $discord WHERE `logins` =  '$user'";
+	$requete = "UPDATE `users` SET `id_discord` = $discord WHERE `logins` =  '$user'";
 	$resultat = $bdd->query($requete);
 	if($resultat){
 		return TRUE;
@@ -155,7 +145,7 @@ function id_discord(){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
 	$bdd->set_charset("utf8");
-	$requete = "SELECT id_discord FROM Users WHERE `logins` = '$user'" ;
+	$requete = "SELECT id_discord FROM `users` WHERE `logins` = '$user'" ;
 	$resultat = $bdd->query($requete);
 	while ($ligne = $resultat->fetch_assoc()) {
 		if($ligne['id_discord'] == NULL){
@@ -225,7 +215,7 @@ function User(){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
    	$bdd->set_charset("utf8");
-	$requete = "SELECT logins FROM Users WHERE `logins` = '$user'" ;
+	$requete = "SELECT logins FROM `users` WHERE `logins` = '$user'" ;
 	$resultat = $bdd->query($requete);
 	while ($ligne = $resultat->fetch_assoc()) {
 		echo $ligne['logins'] ;
@@ -240,7 +230,7 @@ function email(){
 	global $database_shootmania;
 	mysqli_select_db($bdd, $database_shootmania);
    	$bdd->set_charset("utf8");
-	$requete = "SELECT mail FROM Users WHERE `logins` = '$user'" ;
+	$requete = "SELECT mail FROM `users` WHERE `logins` = '$user'" ;
 	$resultat = $bdd->query($requete);
 	while ($ligne = $resultat->fetch_assoc()) {
 		echo $ligne['mail'] ;
@@ -467,6 +457,8 @@ function affiche_team_joueur(){
 					`teams` 
 				ON player_teams.id_player_teams = teams.id_teams";
 	$resultat = sql_request($database_shootmania, $requete);
+	var_dump($resultat, $requete);
+	exit;
 	if ($resultat != null){
 		return $resultat;
 	}

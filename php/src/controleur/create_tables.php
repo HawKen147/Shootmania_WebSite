@@ -25,7 +25,7 @@ function create_DB_tournament(){
 // creer la table utilisateur 
 function create_table_utilisateur() {
 	global $database_shootmania;
-	$sql = "CREATE TABLE IF NOT EXISTS Users (
+	$sql = "CREATE TABLE IF NOT EXISTS users (
 		`logins` VARCHAR(50) NOT NULL ,
 		`mdp` VARCHAR(50) NOT NULL ,
 		`mail` VARCHAR(250) NOT NULL ,
@@ -82,13 +82,11 @@ function create_table_team() {
 // creer la table joueur joue au tournois
 function create_table_players_plays() {
 	global $database_shootmania;
-	$sql = "CREATE TABLE IF NOT EXISTS Player_Play (
-		`id_tournois` INT NOT NULL ,
-		`nom` VARCHAR(50) NOT NULL ,
-		`description` TEXT NOT NULL ,
-		PRIMARY KEY (`id_tournois`) ,
-		CONSTRAINT FK_id_tournois FOREIGN KEY (`id_tournois`) REFERENCES tournois(`id_tournois`) ,
-		CONSTRAINT FK_id_nom FOREIGN KEY (`nom`) REFERENCES Users(`login`))";
+	$sql = "CREATE TABLE IF NOT EXISTS player_teams ( 
+			`login_player` VARCHAR(50) NOT NULL , 
+			`id_player_teams` INT NOT NULL ,
+			CONSTRAINT FK_login_player_teams FOREIGN KEY (`login_player`) REFERENCES users(`logins`) ,
+			CONSTRAINT FK_nom_team FOREIGN KEY (`id_player_teams`) REFERENCES teams(`id_teams`))";
 	$result = sql_request($database_shootmania, $sql);
 	return $result;	
 };
@@ -96,7 +94,7 @@ function create_table_players_plays() {
 // creer la table des joueurs qui sont dans une teams
 function create_table_player_teams(){
 	global $database_shootmania;
-	$sql = "CREATE TABLE IF NOT EXISTS Player_teams (
+	$sql = "CREATE TABLE IF NOT EXISTS player_teams (
 		`login_player`  VARCHAR(50) NOT NULL ,
 		`id_player_teams` INT NOT NULL ,
 		CONSTRAINT FK_login_player FOREIGN KEY (`login_player`) REFERENCES users(`logins`) ,
