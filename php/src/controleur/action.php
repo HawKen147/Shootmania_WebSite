@@ -320,10 +320,13 @@ function est_admin() {
    	$bdd->set_charset("utf8");
 	$requete = "SELECT Administrator FROM `users` WHERE `logins` = '$user'"; 
 	$resultat = $bdd->query($requete);
-	$ligne = $resultat -> fetch_assoc();
-	if ($ligne ['Administrator'] == '1' ) {
-		return TRUE;
+	if ($resultat){
+		$ligne = $resultat -> fetch_assoc();
+		if ($ligne ['Administrator'] == '1' ) {
+			return TRUE;
 		}
+	}
+	
 	return FALSE;
 };
 
