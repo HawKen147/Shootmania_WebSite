@@ -45,7 +45,6 @@ function check_name_team($name_team){
     global $database_shootmania;
     $requete = "SELECT `nom_team` from `teams` WHERE `nom_team` = '$name_team'";
     $resultat = sql_request($database_shootmania, $requete);
-    var_dump($resultat);
     if($resultat){
         $ligne = $resultat -> fetch_assoc();
     }
