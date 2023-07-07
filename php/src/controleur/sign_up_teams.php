@@ -7,7 +7,6 @@ include_once ("action.php");
 ///////////////////////////////////////////////////////////////////////////
 ///////// formulaire pour l'ajout d'une team dans un tournois /////////////
 ///////////////////////////////////////////////////////////////////////////
-var_dump($_POST['add_team_tournament'],$_POST['team'],$_POST['id_tournois']);
 if ($_POST['add_team_tournament'] == 'send') {      
     $team = $_POST['team']; 
     $id_tounrois = $_POST['id_tournois'];

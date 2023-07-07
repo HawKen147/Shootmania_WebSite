@@ -115,7 +115,6 @@ function check_players_registered($team_name, $id_tournament, $nb_player){
     $nb = 0;
     $player_sign_up_team = get_player_team_tournament($id_tournament, $nb_player); //player signed up
     $player_team = get_player_team($team_name);
-    var_dump($player_sign_up_team, $player_team);
     if (isset($player_sign_up_team) AND isset($player_team)){
         for($i = 1; $i <= count($player_team); $i++){
             for ($j = 1; $j <= count($player_sign_up_team); $j++){

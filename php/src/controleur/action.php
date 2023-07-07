@@ -457,8 +457,6 @@ function affiche_team_joueur(){
 					`teams` 
 				ON player_teams.id_player_teams = teams.id_teams";
 	$resultat = sql_request($database_shootmania, $requete);
-	var_dump($resultat, $requete);
-	exit;
 	if ($resultat != null){
 		return $resultat;
 	}
