@@ -58,10 +58,10 @@ include_once("../controleur/action.php");
     <?php
     $result = affiche_team_joueur();
     if (isset($result)){
-      while ($ligne = $result->fetch_assoc()) {
+      while ($ligne = $result->fetch(PDO::FETCH_ASSOC)) {
         if ($ligne !='' && $ligne['login_player'] === $_SESSION["utilisateur"]){
           $id = $ligne['id_teams'];
-          echo ( '<a href=team.php?id_teams=' . $id . '&name=' . $ligne['login_player'] .'>' . $ligne['nom_team'] . '<br>' 
+          echo ( '<a href=team.php?id_teams=' . $id . '>' . $ligne['nom_team'] . '<br>' 
           . '<br>' . '<img src=' .  $ligne['images'] . '>' . '</a>' . '<br>' .  '<br>'. '<br>');
         }
       }

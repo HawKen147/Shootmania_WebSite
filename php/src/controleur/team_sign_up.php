@@ -11,157 +11,128 @@ include_once('action.php');
 
 final_call();
 
-//final function: wrap everythings
+//final function: wrap everything
 function final_call(){
-    $id_tournament = htmlspecialchars($_GET['id_tournois']);
-    $team_name = htmlspecialchars($_GET['Team']);
-    $nb_player = nb_player_tounament($id_tournament);
-    $players = get_players();
-    check_player_team($team_name, $players);
-    $id_team = recupere_id_team($team_name);
-    check_signed_up_team($id_team, $id_tournament);
-    if (check_players_registered($team_name, $id_tournament, $nb_player) == 0){
-        if (sign_up_the_team($id_tournament, $id_team, $players)){
-            header("Location:../view/tournament.php?id=" . $id_tournament);
-        } 
-    } else {
-            $_SESSION['err'] = "something went wrong";
-            header("Location:../view/tournament.php?id=" . $id_tournament);
+    $id_tournament = htmlspecialchars($_POST['id_tournois']);
+    $id_team = htmlspecialchars($_POST['Team']);
+    $players = $_POST['player'];
+    if(check_player_team($id_team, $players)){          // verifie si les joueurs font bien partie la leurs team
+        if(!check_signed_up_team($id_team, $id_tournament)){         //verifie si l'equipe est deja inscrite
+            if (!check_players_registered($players, $id_tournament)){        //verifie si un joueur est deja inscrit
+                if (sign_up_the_team($id_tournament, $id_team, $players)){          //inscrit l'equipe et les joueurs  
+                    $_SESSION['err'] = "Your team '" . get_team_name($id_team) . "' has been registered ";
+                    header("Location:../view/tournament.php?id=" . $id_tournament);
+                    exit;
+                } 
+            }
+        }   
+    header("Location:../view/tournament.php?id=" . $id_tournament);
+    exit;
     }
 }
 
 //sign up the team to the tournament
 function sign_up_the_team($id_tournament, $id_team, $players){
-    global $database_tournament;
-    $requete = sql_querry_team_tournament($id_tournament, $id_team, $players);
-    $resultat = sql_request($database_tournament, $requete);
+    $resultat = sql_querry_team_tournament($id_tournament, $id_team, $players);
     return $resultat;
 }
 
-//get the player that are going to register
-function get_players(){
-    $url = $_SERVER['REQUEST_URI'];
-    $player = str_replace("&player=", " ", $url);
-    $player = explode(" ", $player);
-    array_shift($player);
-    return $player;
-}
-
 //check if the players belongs to the team 
-function check_player_team($team_name, $players){
-    $nb = 0;
-    $player_team = get_player_team($team_name); // all players of the team
-    for($i = 1; $i <= count($player_team); $i++){
-        for ($j = 0; $j < count($players); $j++){
-            if ($player_team[$i] == $players[$j]){
-                $nb ++;
-            }
+//return true if the player is not a part of the team
+function check_player_team($id_team, $players){
+    foreach($players as $player){
+        $requete = "SELECT `login_player` FROM `player_teams` WHERE `id_player_teams` = ? AND `login_player` = ?";
+        $resultat = sql_request($requete, [$id_team, $player]);
+        $ligne['player'] = $resultat -> fetch(PDO::FETCH_ASSOC);
+        if ($ligne['player'] == null){
+            $_SESSION['err'] = "The player '" . $player . "' is not a team member";
+            return false;
         }
     }
-    if ($nb == count($players)){
-        return TRUE;
-    } else {
-        return FALSE;
-    }
-}
-
-//get players from a specific team and returns the players
-function get_player_team($team_name){
-    global $database_shootmania;
-    $i = 1;
-    $id_team = recupere_id_team($team_name);
-    $requete = "SELECT `login_player` from `player_teams` WHERE `id_player_teams` = '$id_team'";
-    $resultat = sql_request($database_shootmania, $requete);
-    if ($resultat){
-        while ($ligne = $resultat -> fetch_assoc()){
-            $player[$i] = $ligne['login_player'];
-            $i ++;
-        }
-    return $player;
-    }
+    return true;
 }
 
 //verifie si la team est pas deja inscrite
 //check if the team has not sign up already
 function check_signed_up_team($id_team, $id_tournament){
-    global $database_tournament;
-    $requete = "SELECT `id_team_tournois_playable` FROM `$id_tournament` WHERE `id_team_tournois_playable` = '$id_team'";
-    $resultat = sql_request($database_tournament, $requete);
-    return $resultat;
-}
-
-//gets the players of a specific team registered on the tournament
-function get_player_team_tournament($id_tournament, $nb_player){
-    global $database_tournament;
-    $requete = "SELECT * FROM `$id_tournament`";
-    $resultat = sql_request($database_tournament, $requete);
-    if($resultat){
-        while ($ligne = $resultat -> fetch_assoc()){
-            for ($i = 1; $i <= $nb_player; $i++){
-                $player[$i] = $ligne['player_'.$i];
-            }
+    $requete = "SELECT `id_team_tournois` FROM `tournament_team_player` WHERE `id_tournois_tournois` = ? AND `id_team_tournois` = ?";
+    $resultat = sql_request($requete, [$id_tournament, $id_team]);
+    $ligne = $resultat -> fetch(PDO::FETCH_ASSOC);
+    if(isset($ligne['id_team_tournois'])){
+        if($ligne['id_team_tournois'] == null){
+            $_SESSION['err'] = 'Your team is already sign up' .  get_team_name($id_team);
+            return true;
         }
-        if(isset($player)){
-            return $player;
-        }
-    } else {
-        return $resultat;
+        $_SESSION['err'] = 'Your team is already sign up' .  get_team_name($id_team);
+        return true;
     }
+    return false;
 }
 
 //verifie si les joueurs sont deja enregistrer dans le tournois
 //check if players are already signed up to the tournament
-function check_players_registered($team_name, $id_tournament, $nb_player){
-    $nb = 0;
-    $player_sign_up_team = get_player_team_tournament($id_tournament, $nb_player); //player signed up
-    $player_team = get_player_team($team_name);
-    if (isset($player_sign_up_team) AND isset($player_team)){
-        for($i = 1; $i <= count($player_team); $i++){
-            for ($j = 1; $j <= count($player_sign_up_team); $j++){
-                if ($player_team[$i] == $player_sign_up_team[$j]){
-                    $nb ++;
-                }
+function check_players_registered($players, $id_tournament){
+    $requete = "SELECT `user_login` FROM `tournament_team_player` WHERE `id_tournois_tournois` = ?";
+    $resultat = sql_request($requete, [$id_tournament]);
+    while ($ligne = $resultat -> fetch(PDO::FETCH_ASSOC)){
+        foreach ($players as $player){
+            if ($ligne['user_login'] == $player){
+                $_SESSION['err'] = "A player is already register for this tournament '" . $ligne['user_login'] . "'";
+                return true;
             }
         }
-        return $nb;
     }
+    return false;
 }
 
 // create the SQL query wich depends of the number of player required (5 max)
-function sql_querry_team_tournament($id_tournament, $id_team, $player){
-    $nb_player = count($player);
-    switch ($nb_player) {
+function sql_querry_team_tournament($id_tournament, $id_team, $players){
+    $nb_players = count($players);
+    switch ($nb_players){
         case -1:
             return False;
         case 1:
-            $player_1 = $player[0];
-            $requete = "INSERT INTO `$id_tournament` VALUES ('$id_team', '$player_1')";
-            return $requete;
+            $player1 = $players[0];
+            $requete = "INSERT INTO `tournament_team_player` (`id_tournois_tournois`, `id_team_tournois`, `user_login`) VALUES ( ?, ?, ?)";
+            $resultat = sql_request($requete,[$id_tournament, $id_team, $player1]);
+            return $resultat;
         case 2:
-            $player_1 = $player[0];
-            $player_2 = $player[1];
-            $requete = "INSERT INTO `$id_tournament` VALUES ('$id_team', '$player_1', '$player_2')";
-            return $requete;
+            $player1 = $players[0];
+            $player2  = $players[1];
+            $requete = "INSERT INTO `tournament_team_player` (`id_tournois_tournois`, `id_team_tournois`, `user_login`) VALUES ( ?, ?, ?),( ?, ?, ?)";
+            $resultat = sql_request($requete,[$id_tournament, $id_team, $player1, $id_tournament, $id_team, $player2]);
+            return $resultat;
         case 3:
-            $player_1 = $player[0];
-            $player_2 = $player[1];
-            $player_3 = $player[2];
-            $requete = "INSERT INTO `$id_tournament` VALUES ('$id_team', '$player_1', '$player_2', '$player_3')";
-            return $requete;
+            $player1 = $players[0];
+            $player2  = $players[1];
+            $player3  = $players[2];
+            $requete = "INSERT INTO `tournament_team_player` (`id_tournois_tournois`, `id_team_tournois`, `user_login`) VALUES ( ?, ?, ?),( ?, ?, ?),( ?, ?, ?)";
+            $resultat = sql_request($requete,[$id_tournament, $id_team, $player1, $id_tournament, $id_team, $player2, $id_tournament, $id_team, $player3]);
+            return $resultat;
         case 4:
-            $player_1 = $player[0];
-            $player_2 = $player[1];
-            $player_3 = $player[2];
-            $player_4 = $player[3];
-            $requete = "INSERT INTO `$id_tournament` VALUES ('$id_team', '$player_1', '$player_2', '$player_3', '$player_4')";
-            return $requete;
+            $player1 = $players[0];
+            $player2  = $players[1];
+            $player3  = $players[2];
+            $player4 = $players[3];
+            $requete = "INSERT INTO `tournament_team_player` (`id_tournois_tournois`, `id_team_tournois`, `user_login`) VALUES ( ?, ?, ?),( ?, ?, ?),( ?, ?, ?),( ?, ?, ?)";
+            $resultat = sql_request($requete,[$id_tournament, $id_team, $player1, $id_tournament, $id_team, $player2, $id_tournament, $id_team, $player3, $id_tournament, $id_team, $player4]);
+            return $resultat;
         case 5:
-            $player_1 = $player[0];
-            $player_2 = $player[1];
-            $player_3 = $player[2];
-            $player_4 = $player[3];
-            $player_5 = $player[4];
-            $requete = "INSERT INTO `$id_tournament` VALUES ('$id_team', '$player_1', '$player_2', '$player_3', '$player_4', '$player_5')";
-            return $requete;
+            $player1 = $players[0];
+            $player2  = $players[1];
+            $player3  = $players[2];
+            $player4 = $players[3];
+            $player5 = $players[4];
+            $requete = "INSERT INTO `tournament_team_player` (`id_tournois_tournois`, `id_team_tournois`, `user_login`) VALUES ( ?, ?, ?),( ?, ?, ?),( ?, ?, ?),( ?, ?, ?),( ?, ?, ?)";
+            $resultat = sql_request($requete,[$id_tournament, $id_team, $player1, $id_tournament, $id_team, $player2, $id_tournament, $id_team, $player3, $id_tournament, $id_team, $player4, $id_tournament, $id_team, $player5]);
+            return $resultat;
     }
+}
+
+//recupere le nom de l'equipe
+function get_team_name($id_team){
+    $requete = "SELECT nom_team FROM teams WHERE id_teams = ?";
+    $resultat = sql_request($requete, [$id_team]);
+    $ligne = $resultat -> fetch(PDO::FETCH_ASSOC);
+    return $ligne['nom_team'];
 }

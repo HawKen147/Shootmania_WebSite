@@ -14,11 +14,10 @@ global $url_challonge;
 
 //function qui initialise la table
 function init_funcup (){
-    global $database_shootmania;
     $url = "/speedball-speedballfuncup203.json";
     $id = 203;
-    $sql = "INSERT INTO `funcup`(`id_funcups`, `funcups`) VALUES ('$id','$url')";
-    $resultat = sql_request($database_shootmania, $sql);
+    $sql = "INSERT INTO `funcup`(`id_funcups`, `funcups`) VALUES (? , ?)";
+    $resultat = sql_request($sql, [$id, $url]);
     if ($resultat){
         test_url();
     }
@@ -26,26 +25,24 @@ function init_funcup (){
 
 //function qui recupere le numero de la funcup
 function get_nbr_funcup(){
-    global $database_shootmania;
-    $sql = "SELECT * FROM `funcup`" ;
-    $resultat = sql_request($database_shootmania, $sql);
-    $row = $resultat -> fetch_assoc();
-    if ($row == NULL) {
-        init_funcup ();
-    } else {
+    $sql = 'SELECT * FROM `funcup`';
+    $resultat = sql_request($sql, []);
+    $row = $resultat -> fetch(PDO::FETCH_ASSOC);
+    if ($row){
         return $row; // objet contenent 'id_funcups' et 'funcups' (url)
+    } else {
+        init_funcup ();  
     }
-        
+  
 }
 
 //met a jour la base de donnée
 function update_funcup($url){
-    global $database_shootmania;
     $row = get_nbr_funcup();
     $old_id = $row['id_funcups'];
     $id = $old_id + 1;
-    $sql = "UPDATE `funcup` SET `id_funcups`='$id',`funcups` = '$url' WHERE `id_funcups` = '$old_id'";
-    $resultat = sql_request($database_shootmania, $sql);
+    $sql = "UPDATE `funcup` SET `id_funcups`= ? ,`funcups` = ? WHERE `id_funcups` = ? ";
+    $resultat = sql_request($sql, [$id, $url, $old_id]);
     if ($resultat){
        test_url();
     }
@@ -106,7 +103,7 @@ function test_url(){
     $data = curl_api($new_url);
     //var_dump($data);
     //echo $data['tournament']['state'];
-    if ( $data ){
+    if (isset($data['tournament']['state']) && $data['tournament']['state'] == 'complete' ){
         update_funcup($new_url);
     } else {
         $row =  get_nbr_funcup();

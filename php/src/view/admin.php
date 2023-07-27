@@ -45,9 +45,6 @@ if (est_admin() == false) {
                 </div>
             </div>
         </form>
-        <?php
-        if (est_HawKen()) {
-        ?>
             <form name="delx-admin" action="/controleur/add_admin.php" method="post">
                 <h3>Delete an admin</h3>
                 <div class="form-group">
@@ -65,7 +62,6 @@ if (est_admin() == false) {
                 </div>
             </form>
         <?php
-        }
         if (isset($_SESSION['add_admin'])) {
             echo $_SESSION['add_admin'];
             unset($_SESSION['add_admin']);

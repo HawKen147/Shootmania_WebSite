@@ -11,5 +11,5 @@ include_once ("action.php");
 if(isset($_GET['del_tournament'])){
     del_tournament($_GET['id_tournois']);
     
-header('Location:/view/home.php');
+header('Location:../view/home.php');
 }

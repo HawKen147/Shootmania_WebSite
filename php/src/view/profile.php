@@ -30,10 +30,10 @@ include_once("../controleur/action.php");
     <div class="colonne-droite">
       <div class="affiche-profile">
         <div class="user">
-          <span> User ID : <?php User(); ?></span>
+          <span> User ID : <?php echo $_SESSION['utilisateur'] ?></span>
         </div>
         <div class="user">
-          <span> User Email : <?php email(); ?></span>
+          <span> User Email : <?php echo email(); ?></span>
         </div>
         <div class="user">
           <span> User Discord : <?php if (id_discord() != False) {

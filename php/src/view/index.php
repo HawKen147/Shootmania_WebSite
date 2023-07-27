@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include_once("../controleur/create_tables.php");
 if (isset($_GET['invite']) & isset($_GET['id_teams']) & isset($_GET['limit'])){
     $id_teams = htmlspecialchars($_GET['id_teams']);
@@ -7,7 +8,6 @@ if (isset($_GET['invite']) & isset($_GET['id_teams']) & isset($_GET['limit'])){
     $limit = htmlspecialchars($_GET['limit']);
     $link = '?id_teams=' . $id_teams . '&invite=' . $invite . '&limit=' . $limit;
 }
-
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//FR">
@@ -38,6 +38,7 @@ if (isset($_GET['invite']) & isset($_GET['id_teams']) & isset($_GET['limit'])){
                         <div class="text-center error">
                             <!-- ici mettre les codes codes erreurs de l'utilisateur qui se log -->
                             <span class="text-center field-validation-valid helper">
+                                <?php if (isset($_SESSION['log'])){ echo $_SESSION['log']; unset($_SESSION['log']);} ?>
                             </span>
                         </div>
                         <div class="form-group mini">
@@ -53,7 +54,7 @@ if (isset($_GET['invite']) & isset($_GET['id_teams']) & isset($_GET['limit'])){
                         </div>
                         <a class="forgot-password" href="password_recover.php" id="partialLostPasswordLink">You lost your password ?</a>
                         <?php if (isset($link)) { echo ('<input type="hidden" value="' . $link . '" name="link"> ');}?>
-                        <input type="submit" class="button" value="connexion">
+                        <input type="submit" class="button" value="log in">
                     </form>
                     <div class="identification-sep"></div>
                     <div class="new-costumer">
@@ -70,6 +71,8 @@ if (isset($_GET['invite']) & isset($_GET['id_teams']) & isset($_GET['limit'])){
                 Made By HawKen
             </div>
         </div>
+    </footer>
 </body>
 
 </html>
+

@@ -1,5 +1,4 @@
-<?php 
-if(!isset($_SESSION)){
+<?php if(!isset($_SESSION)){
     session_start();
 }
 include("action.php");
@@ -14,13 +13,13 @@ if (isset($_POST['login']) && isset($_POST['password'])){
     $res = connecte_utilisateur($logins, $mot_de_passe);
     if (isset($_POST['link']) ){
         $link = $_POST['link'];
-        if ($res === TRUE){
+        if ($res === true){
             $_SESSION["utilisateur"] = $logins;
              header('Location:../view/team.php'. $link);
         } else if (!$res){
             header('Location:../view/index.php' . $link);
         }
-    } else if ($res === TRUE){
+    } else if ($res === true){
         $_SESSION["utilisateur"] = $logins;
         header('Location:../view/home.php');
     } else {

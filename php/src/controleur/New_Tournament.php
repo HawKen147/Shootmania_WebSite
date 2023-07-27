@@ -19,25 +19,25 @@ if (isset($_POST['Tournament_Name']) && isset($_POST['Tournament_Desc']) && isse
     $Date = date_in_good_order($Date);
 
     if (Create_Tournament($Name, $Desc,$nb_player, $Mode, $Image, $Date, $Serv, $Createur)){
-        $id_tournois = get_last_id_tournament();
-        create_table_tournament_playable($nb_player, $id_tournois); //creer la table avec le nom du tournois.
-        $_SESSION["tournament"] = true;
+        $id_tournament = get_last_id_tournament();
+        $resultat = init_status($id_tournament);
+        $_SESSION['tournois'] = "your tournament has been created";
         header('Location:../view/home.php');
     }  else {
-        $_SESSION["tournament"] = false;
+        $_SESSION["tournois"] = 'Something went wrong, try again';
         header('Location:../view/new_tournament.php');
     }
 }
 
 // create a new tournament
 function Create_Tournament($Name, $Desc, $nb_player, $Mode, $Image, $Date, $Serv, $Createur) {
-	global $database_shootmania;
     if($Image){
-        $requete = "INSERT INTO `tournois` VALUES (`id_tournois`, '$Name', '$Desc', '$nb_player', '$Mode', '$Image', '$Serv', '$Date', '$Createur' )";
+        $requete = "INSERT INTO `tournois` VALUES (`id_tournois`, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $resultat = sql_request($requete, [$Name, $Desc, $nb_player, $Mode, $Image, $Serv, $Date, $Createur]);
     } else {
-        $requete = "INSERT INTO `tournois` VALUES (`id_tournois`, '$Name', '$Desc', '$nb_player', '$Mode', DEFAULT, '$Serv', '$Date', '$Createur' )";
+        $requete = "INSERT INTO `tournois` VALUES (`id_tournois`, ?, ?, ?, ?, DEFAULT, ?, ?, ? )";
+        $resultat = sql_request($requete, [$Name, $Desc, $nb_player, $Mode, $Serv, $Date, $Createur]);
     }
-	$resultat = sql_request($database_shootmania,$requete);
 	return $resultat;
 };
 
@@ -58,16 +58,9 @@ function date_in_good_order ($dateString){
     return $dateStringFormatted;
 }
 
-//create the table where the player will register
-function create_table_tournament_playable($nb_players, $id_tournois){
-	global $database_tournament;
-    $str_id = intval($id_tournois);
-    	$sql = "CREATE TABLE IF NOT EXISTS `$str_id` (
-		`id_team_tournois_playable` INT NOT NULL, ";
-		for($i = 1; $i <= $nb_players; $i++){
-			$sql .= "`player_$i` VARCHAR(50) NOT NULL, "; //depends of the number of players
-		}
-	$sql .= "PRIMARY KEY (`id_team_tournois_playable`))";
-	$result = sql_request($database_tournament, $sql);
-	return $result;
+//function qui initialise le status du tournois
+function init_status($id_tournament){
+	$requete = "INSERT INTO `tournament_status`(`id_tournament_status`, `status`) VALUES ( ? ,'incoming')";
+	$resultat = sql_request($requete, [$id_tournament]);
+	return $resultat;
 }

@@ -11,7 +11,7 @@ function get_player_from_team() {
     var bool = false;
     var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
     nb_player = get_nb_player_select();
-    if (nb_player === checkboxes.length) {
+    if (nb_player == checkboxes.length) {
         bool = true;
     }
     print_button(bool);
@@ -21,8 +21,9 @@ function get_player_from_team() {
 function print_button(bool) {
     if (bool) {
         document.getElementById('button_team_select').style.display = 'block';
-    }
-    else {
+    } else {
         document.getElementById('button_team_select').style.display = 'none';
+
     }
 }
+

@@ -45,7 +45,7 @@ include_once("../controleur/action.php");
         
         <?php
         $resultat = affiche_team();
-        while ($ligne = $resultat->fetch_assoc()) {
+        while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
           echo ( $ligne['nom_team'] . '<br>' . $ligne['createur'] . '<br>' .
           '<br>' . '<img src=' .  $ligne['images'] . '>'. '<br>' .  '<br>');
         }
@@ -56,7 +56,7 @@ include_once("../controleur/action.php");
         <?php
         $res = affiche_joueur_team();
         if ($res) {
-          while ($ligne = $res->fetch_assoc()) {
+          while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
             echo ( $ligne['login_player'] . '<br>');
           } 
         }
@@ -72,13 +72,9 @@ include_once("../controleur/action.php");
     <br>
     <button id="btn_copy">copy</button>
   </main>
-  <footer class="site-footer">
-    <div class="down-page">
-      <div class="text-footer">
-        Made By HawKen
-      </div>
-    </div>
-  </footer>
+  <?php
+    include_once ('../model/footer.php');
+  ?>
 </body>
 <script src="/JS/button-copie.js"></script>
 <script>

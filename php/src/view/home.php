@@ -33,15 +33,21 @@ est_admin();
       echo ("Welcome " . $user);
       ?>
     </div>
-    <div class="titre-h3">
+        <div class="titre-h3">
       <h3> Upcoming Tournaments </h3>
     </div>
+    <?php 
+    if(isset($_SESSION['tournois'])){
+      echo ($_SESSION['tournois']);
+      unset($_SESSION['tournois']);
+    }
+    ?>
     <table>
       <thead>
         <tr>
           <td>Tournament</td>
-          <td>Player per teams</td>
           <td>Mode</td>
+          <td>Player per teams</td>
           <td>Start of the cup</td>
         </tr>
       </thead>
@@ -57,9 +63,10 @@ est_admin();
       <thead>
         <tr>
           <td>Tournament</td>
-          <td>Player per teams</td>
           <td>Mode</td>
-          <td>Start of the cup</td>
+          <td>1st Place</td>
+          <td>2nd Place</td>
+          <td>3rd Place</td>
         </tr>
       </thead>
       <tbody id="affiche_tournois_outdated">

@@ -13,40 +13,28 @@ if(isset($_POST['Team_name'])){
     $image = htmlspecialchars($_POST['Image_team']);
     $createur = $_SESSION['utilisateur'];
     $date = get_date();
-    if (!check_name_team($name)){  // si le nom de la team n'est pas deja pris
-        new_team($name, $image, $createur, $date);
-        $requete = "SELECT `id_teams` FROM `teams` WHERE `createur` = '$createur' ORDER BY `id_teams` DESC limit 1";
-        $resultat = sql_request($database_shootmania, $requete);
-        $ligne = $resultat->fetch_assoc();
+    if (new_team($name, $image, $createur, $date)){  // si le nom de la team n'est pas deja pris
+        $requete = "SELECT `id_teams` FROM `teams` WHERE `createur` = ? ORDER BY `id_teams` DESC limit 1";
+        $resultat = sql_request($requete, [$createur]); 
+        $ligne = $resultat->fetch(PDO::FETCH_ASSOC);
         $id = $ligne['id_teams'];
         ajoute_joueur($createur, $id);
+        header('Location:../view/team.php?id_teams=' . $id);
     } else {
-        $_SESSION['err'] = "the name of the team \"" . $name . "\" is already taken";
+        $_SESSION['err'] = 'something went wrong, impossible to create your team';
+        header('Location:../view/my_teams.php');
     }
-    header('Location:../view/my_teams.php');
 }
 
 
 // creer une team 
-function new_team($name, $image, $Createur, $date){
-	global $database_shootmania;
+function new_team($name, $image, $createur, $date){
     if($image){
-        $requete = "INSERT INTO `teams` VALUES (`id_teams`, '$name', '$image', '$date', '$Createur')";
+        $requete = "INSERT INTO `teams` VALUES (`id_teams`, ? , ? , ? , ?)";
+        $resultat = sql_request($requete, [$name, $image, $date, $createur]);
     } else {
-        $requete = "INSERT INTO `teams` VALUES (`id_teams`, '$name', DEFAULT, '$date', '$Createur')";
+        $requete = "INSERT INTO `teams` VALUES (`id_teams`, ? , DEFAULT, ? , ?)";
+        $resultat = sql_request($requete, [$name, $date, $createur]);
     }
-	$resultat = sql_request($database_shootmania, $requete);
 	return $resultat;
 };
-
-
-//check if the name of the team already exist
-function check_name_team($name_team){
-    global $database_shootmania;
-    $requete = "SELECT `nom_team` from `teams` WHERE `nom_team` = '$name_team'";
-    $resultat = sql_request($database_shootmania, $requete);
-    if($resultat){
-        $ligne = $resultat -> fetch_assoc();
-    }
-    return $ligne;
-}

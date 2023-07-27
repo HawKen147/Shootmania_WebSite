@@ -8,8 +8,6 @@ include("send_mail.php");
 ///////////////////////////////////////////////////////////////////////////
 
 //chiffre le code dans l'url
-global $database_shootmania;
-	mysqli_select_db($bdd, $database_shootmania);
 function chiffre($code){
     $chiffrage = 'atgune';
     $code = md5($code . $chiffrage);
@@ -18,10 +16,9 @@ function chiffre($code){
 
 //recupere l'email de l'utilisateur et le retourne
 function recupere_email($users){
-    global $bdd;
-    $email = "SELECT mail FROM users WHERE logins = '$users'";
-    $resultat = $bdd->query($email);
-    $ligne = $resultat -> fetch_assoc(); 
+    $requete = "SELECT `logins`, `mail` FROM `users` WHERE `logins` = ?";
+    $resultat = sql_request($requete, [$users]);
+    $ligne = $resultat -> fetch(PDO::FETCH_ASSOC);
     $email = $ligne['mail'];
     return $email;
 }
@@ -40,15 +37,15 @@ if(isset($_POST['recup_logins'])){
             }
             $_SESSION['recup_code'] = $recup_code;
             $recup_code = chiffre($recup_code);
-            $requete = "SELECT `id_recuperation` FROM `recuperation` WHERE `logins` = '$login'";
-            $result = $bdd->query($requete);
-            $ligne = $result -> fetch_assoc(); 
+            $requete = "SELECT `id_recuperation` FROM `recuperation` WHERE `logins` = ? ";
+            $resultat = sql_request($requete, [$login]);
+            $ligne = $resultat -> fetch(PDO::FETCH_ASSOC); 
             if($ligne != NULL) {
-                $requete = "UPDATE `recuperation` SET `code`='$recup_code' WHERE `logins` = '$login'";
-                $resultat = $bdd->query($requete);
+                $requete = "UPDATE `recuperation` SET `code`= ? WHERE `logins` = ? ";
+                $resultat = sql_request($requete, [$recup_code, $login]);
             } else {
-                $requete = "INSERT INTO recuperation(logins,code) VALUES ('$login','$recup_code')";
-                $resultat = $bdd->query($requete);
+                $requete = "INSERT INTO `recuperation` (logins,code) VALUES (? , ?)";
+                $resultat = sql_request($requete, [$login, $recup_code ]);
             }
             if(envoi_mail($email,$recup_code)){
                 header('Location:/view/email_send.php');
@@ -64,9 +61,9 @@ if(isset($_POST['recup_code'])){
     $login = $_POST['logins'];
     $email = recupere_email($login);
     $recup_code = htmlspecialchars($_POST['verif_code']);
-    $requete = "SELECT `logins`,`code` FROM `recuperation` WHERE `code` = '$recup_code'";
-    $resultat = $bdd->query($requete);
-    $ligne = $resultat -> fetch_assoc(); 
+    $requete = "SELECT `logins`,`code` FROM `recuperation` WHERE `code` = ? ";
+    $resultat = sql_request($requete, [$recup_code]);
+    $ligne = $resultat -> fetch(PDO::FETCH_ASSOC); 
     if($ligne != NULL){
         if($ligne['logins'] == $_SESSION['recup_logins']){
             header('Location:/view/password_recover.php?everif=logins&mail='.$email.'&verif=code&code='.$recup_code.'&logins='.$login);

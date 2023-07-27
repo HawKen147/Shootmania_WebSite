@@ -56,7 +56,7 @@ include_once("../controleur/action.php");
                 </div>
             </div>
         </div>
-        <script src="JS/form.js"></script>
+        <script src="../JS/form.js"></script>
     </main>
     <footer class="site-footer">
         <div class="down-page">

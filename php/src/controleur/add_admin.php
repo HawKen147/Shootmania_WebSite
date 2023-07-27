@@ -17,6 +17,6 @@ if (isset($_POST['login'])) {
         del_admin($user);
     }
 }
-header('Location:/view/admin.php');
+header('Location:../view/admin.php');
 
 // il faut gerer les erreurs si il y en a / dire si l'utilisateur a bien ete ajouter en tant que admin ou suppr

@@ -34,7 +34,7 @@ include_once ("../controleur/challonge-api.php");
       <div class="iframe">
         <?php $url = test_url(); $num_cup = filter_var($url, FILTER_SANITIZE_NUMBER_INT); ?>
         <h3>SpeedBall Funcups n° <?php echo ($num_cup); ?> </h3> <br>
-        <iframe src="<?php echo ($url) ?>" width="80%" height="510" frameborder="0" scrolling="auto" allowtransparency="false"></iframe>
+        <iframe src="<?php echo ($url) ?>" width="80%" height="510" frameborder="0" scrolling="auto" allowtransparency="false" loading="lazy"></iframe>
       </div>
     </class>
   </main>

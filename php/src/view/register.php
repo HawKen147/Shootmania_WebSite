@@ -25,14 +25,11 @@ include_once("../controleur/action.php");
                 <form action="../controleur/reg.php" method="post">
                     <h3>Register here</h3>
                     <div class="text-center error">
-                        <!-- ici mettre les codes codes erreurs de l'utilisateur qui se log -->
                         <span class="text-center field-validation-valid helper">
+                            <?php if(isset($_SESSION['err'])){echo $_SESSION['err']; unset($_SESSION['err']);};?>
                         </span>
                     </div>
                     <div class="form-group mini">
-                        <!-- ici mettre les codes codes erreurs de l'utilisateur qui se log (email) -->
-                        <span class="text-center field-validation-valid helper">
-                        </span>
                         <input data-val-maxlength="Your login must be shorter than 50 characters." data-val-maxlength-max="50" data-val-required="You must use your login." maxlength="50" name="login" placeholder="Your Login" type="text" value="" required>
                     </div>
                     <div class="form-group mini">
