@@ -2,9 +2,9 @@
 
 
 function seConnecterBDD(){
-    $dbhost = 'localhost';
+    $dbhost = 'db';
     $dbuser = 'root';
-    $dbpass = '';
+    $dbpass = 'MYSQL_ROOT_PASSWORD';
     $dbname = 'shootmania';
 
     try {

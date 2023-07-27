@@ -6,9 +6,9 @@ include_once ("BDD.php");
 // create the DB Shootmania
 function create_DB_shootmania(){
 	$username = 'root';
-	$password = '';
+	$password = 'MYSQL_ROOT_PASSWORD';
 	// Se connecter au serveur MySQL (sans sélectionner de base de données pour le moment)
-	$pdo = new PDO("mysql:host=localhost;charset=utf8", $username, $password);
+	$pdo = new PDO("mysql:host=db;charset=utf8", $username, $password);
 
 	// Définir le mode d'erreur de PDO sur Exception
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -18,7 +18,7 @@ function create_DB_shootmania(){
 
 	try {
 	    // Exécuter la requête de création de base de données
-	    $pdo->exec("CREATE DATABASE IF NOT EXISTS $database_shootmania");
+	    $pdo->exec("CREATE DATABASE IF NOT EXISTS 'shootmania'");
 		$bool = true;
 	} catch (PDOException $e) {
 	    // En cas d'erreur lors de l'exécution de la requête, afficher l'erreur
