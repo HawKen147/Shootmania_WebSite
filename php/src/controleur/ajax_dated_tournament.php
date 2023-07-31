@@ -21,7 +21,7 @@ if($resultat){
     while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
         $date = $ligne['time_tournament'];
         $date = DateTime::createFromFormat('d/m/Y H:i', $date);
-        echo '  <tr><td><a href=Tournament.php?id=' . $ligne['id_tournois'] . '>' . $ligne['nom_tournois'] .'</a></td>
+        echo '  <tr><td><a href=tournament.php?id=' . $ligne['id_tournois'] . '>' . $ligne['nom_tournois'] .'</a></td>
                 <td> ' . $ligne['mode']  . '</td> 
                 <td>' . $ligne['nombre_player'] . '</td>
                 <td>' . $ligne['time_tournament'] . '</td></tr>';              

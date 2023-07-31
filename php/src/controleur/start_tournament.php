@@ -11,7 +11,7 @@ if(isset($_POST['id_tournois']) && isset($_POST['start_tournament'])){
         }  
     } else {
         $_SESSION['tournois'] = "Something went wrong, tournament can't start";
-        header("Location:../view/Tournament.php?id=" . $id_tournament);
+        header("Location:../view/tournament.php?id=" . $id_tournament);
     }
     
 }
