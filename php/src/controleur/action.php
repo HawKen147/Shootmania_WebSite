@@ -29,9 +29,7 @@ function login_existe_dans_la_BDD($login){
     if ($resultat) {
         // Récupérer la première ligne de résultat
         $row = $resultat->fetch(PDO::FETCH_ASSOC);
-		var_dump('login existe bdd = ' . $row);
-
-        if ($row) {
+		if ($row) {
             // Le login existe déjà dans la base de données
             $_SESSION['err'] = 'Sorry, this login is already taken: ' . $login;
             return true;

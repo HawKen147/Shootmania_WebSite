@@ -16,7 +16,7 @@ $requete = "SELECT tn.nom_tournois, tn.id_tournois, tn.mode, tn.time_tournament,
             INNER JOIN tournament_status ts on ts.id_tournament_status = tn.id_tournois
             WHERE ts.status = 'incoming'
             ORDER BY tn.time_tournament DESC";
-$resultat = sql_request($requete, [NULL]);
+$resultat = sql_request($requete);
 if($resultat){
     while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
         $date = $ligne['time_tournament'];

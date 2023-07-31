@@ -1,11 +1,10 @@
 <?php
 include_once("../controleur/action.php");
 
-
-
 print_score_board();
 
 function get_tournament_result(){
+    $result_tournament = null;
     $requete = "SELECT tr.place, t.nom_team, tn.nom_tournois, tn.id_tournois, tn.mode
                 FROM tournament_result tr
                 INNER JOIN teams t ON tr.id_team_result = t.id_teams
@@ -13,7 +12,7 @@ function get_tournament_result(){
                 INNER JOIN tournament_status ts on ts.id_tournament_status = tn.id_tournois
                 WHERE ts.status = 'over'
                 ORDER BY tn.id_tournois DESC";
-    $resultat = sql_request($requete, [NULL]);
+    $resultat = sql_request($requete);
     while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
         $id_tournament = $ligne['id_tournois'];
         $nom_tournois = $ligne['nom_tournois'];
@@ -31,8 +30,7 @@ function get_tournament_result(){
     return $result_tournament;
 }
 
-function print_tournament_results(){
-    $tab_tournois_team_place = get_tournament_result();
+function print_tournament_results($tab_tournois_team_place){
     $first ='';
     $second ='';
     $third ='';
@@ -64,8 +62,15 @@ function print_tournament_results(){
 }
 
 function print_score_board(){
-    $tables = print_tournament_results();
-    foreach($tables as $table){
-        echo $table;
+    $tab_tournois_team_place = get_tournament_result();
+    if($tab_tournois_team_place){
+        $tables = print_tournament_results($tab_tournois_team_place);
+        if($tables){
+            foreach($tables as $table){
+                echo $table;
+            }
+        }
     }
+
+
 }
