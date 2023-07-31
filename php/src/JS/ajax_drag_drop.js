@@ -39,7 +39,7 @@ function saveAssociations() {
             const response = JSON.parse(xhr.responseText);
             console.log(response);
             if(response['message'] === true){
-                window.location.href = '../view/Tournament.php?' + resultat['id_tournament'];
+                window.location.href = '../view/tournament.php?' + resultat['id_tournament'];
             }
         } else {
             console.error('Erreur lors de la requête AJAX :', xhr.status);
