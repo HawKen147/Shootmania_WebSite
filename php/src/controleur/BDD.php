@@ -1,6 +1,5 @@
 <?php
 
-
 function seConnecterBDD(){
     $dbhost = 'db';
     $dbuser = 'root';

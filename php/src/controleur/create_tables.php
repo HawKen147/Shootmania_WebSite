@@ -1,7 +1,6 @@
 <?php
 
-include_once ("BDD.php");
-
+require_once("BDD.php");
 
 // create the DB Shootmania
 function create_DB_shootmania(){
@@ -18,7 +17,7 @@ function create_DB_shootmania(){
 
 	try {
 	    // Exécuter la requête de création de base de données
-	    $pdo->exec("CREATE DATABASE IF NOT EXISTS 'shootmania'");
+	    $pdo->exec("CREATE DATABASE IF NOT EXISTS `shootmania`");
 		$bool = true;
 	} catch (PDOException $e) {
 	    // En cas d'erreur lors de l'exécution de la requête, afficher l'erreur
@@ -87,9 +86,9 @@ function create_table_player_tournois(){
 		`id_tournois_tournois` INT NOT NULL ,
 		`id_team_tournois`  INT NOT NULL ,
 		`user_login` VARCHAR (50) NOT NULL,
-		CONSTRAINT FK_login_player FOREIGN KEY (`id_team_tournois`) REFERENCES teams(`id_teams`) ,
+		CONSTRAINT FK_id_team_tournois FOREIGN KEY (`id_team_tournois`) REFERENCES teams(`id_teams`) ,
 		CONSTRAINT FK_id_teams FOREIGN KEY (`id_tournois_tournois`) REFERENCES tournois(`id_tournois`),
-		CONSTRAINT FK_user_login FOREIGN KEY (`user_login`) REFERENCES users(`login`))";
+		CONSTRAINT FK_user_login FOREIGN KEY (`user_login`) REFERENCES users(`logins`))";
 	$result = sql_request_table_database($sql);
 	return $result;
 }
@@ -164,11 +163,11 @@ function sql_request_table_database($sql){
 ####################################################################
 create_DB_shootmania();
 create_table_tournois();
+create_table_utilisateur();
 create_table_team ();
 create_table_funcup();
 create_table_player_tournois();
 create_table_recuperation();
-create_table_utilisateur();
 create_table_tournament_status();
 create_table_tournament_result();
 create_table_player_team();
