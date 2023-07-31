@@ -246,7 +246,7 @@ function est_admin() {
 	$requete = "SELECT Administrator FROM `users` WHERE `logins` = ? "; 
 	$resultat = sql_request($requete, [$user]);
 	$ligne = $resultat->fetch(PDO::FETCH_ASSOC);
-	if ($ligne ['Administrator'] == '1' ) {
+	if ($ligne ['Administrator']) {
 		return TRUE;
 		}
 	return FALSE;
@@ -257,7 +257,7 @@ function est_admin() {
 // ajouté une fonction pour verifier si la personne est deja admin ou pas 
 function affiche_user_no_admin(){
 	$requete = "SELECT logins FROM `users` WHERE Administrator = 0"; 
-	$resultat = sql_request($requete, [NULL]);
+	$resultat = sql_request($requete);
 	while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
 		echo '<option value="' . $ligne['logins'] . '">' . $ligne['logins'] . '</option>';
 	}
