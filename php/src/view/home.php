@@ -32,8 +32,9 @@ est_admin();
       <?php
       echo ("Welcome " . $user);
       ?>
+      <div id=clock></div>
     </div>
-        <div class="titre-h3">
+    <div class="titre-h3">
       <h3> Upcoming Tournaments </h3>
     </div>
     <?php 
@@ -84,7 +85,7 @@ est_admin();
   </footer>
 </body>
 
-<script src="/JS/ajax_update_dated_tournament.js" async></script>
-<script src="/JS/ajax_update_outdated_tournament.js" async></script>
-
+<script src="../JS/ajax_update_dated_tournament.js" async></script>
+<script src="../JS/ajax_update_outdated_tournament.js" async></script>
+<script src="../JS/clock.js" async></script>
 </html>
