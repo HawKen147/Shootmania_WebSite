@@ -1,6 +1,9 @@
 <?php
 include_once('../controleur/action.php');
 
+
+get_post_update();
+
 //compare the different elements to update them if they are updated.
 function get_post_update(){
     $tournament = get_tournament_info($_SESSION['id_tournament']);
@@ -37,6 +40,10 @@ function get_post_update(){
         update_tournament($tournament_name, $desc, $image, $link, $time);
         header('Location:../view/tournament.php?id=' . $_SESSION['id_tournament']);
     }
+    else {
+        $_SESSION['err'] = 'impossible to update the tournament, check if eveything is fine';
+        header('Location:../view/new_tournament.php?id=' . $_SESSION['id_tournament'] . '&edit');
+    }
 }
 
 //check if the time is in the good format
@@ -54,7 +61,7 @@ function check_time_format($date){
 
 //send the sql request to update the tournament
 function update_tournament($tournament_name, $desc, $image, $link, $time){
-    $requete = "UPDATE `tournois` SET `nom_tournois`=?,`description`= ?, `image`=?, `link_serv`= ?,`time_tournament`= ? WHERE id_tournoais = ?";
+    $requete = "UPDATE `tournois` SET `nom_tournois`=?,`description`= ?, `image`=?, `link_serv`= ?,`time_tournament`= ? WHERE id_tournois = ?";
     $resultat = sql_request($requete, [$tournament_name, $desc, $image, $link, $time, $_SESSION['id_tournament']]);
     return $resultat;
 }

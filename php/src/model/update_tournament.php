@@ -19,7 +19,7 @@ if (!is_creator_tournament($_SESSION['utilisateur'], $_SESSION['id_tournament'])
             <form action="../controleur/update_tournament_db.php" method="post">
             <h3>Modify Your Tournament</h3>
             <div class="text-center error">
-                <span class="text-center field-validation-valid helper"></span>
+                <span class="text-center field-validation-valid helper"><?php if(isset($_SESSION['err'])){ echo $_SESSION['err']; unset($_SESSION['err']);} ?></span>
         </div>
         <div class="form-group mini">
             <span class="text-center field-validation-valid helper"></span>
