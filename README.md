@@ -15,7 +15,7 @@ After that you should be on the index.php page
 
 Create an account and login with the account you have created
 
-##What can you do by now ?
+## What can you do by now ?
 You can create an account, sign in, create tournaments, create teams, start tournament, end tournament...
 
 To start a tournament you will need to create a team and register with your team and the players in your team.
