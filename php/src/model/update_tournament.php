@@ -13,18 +13,15 @@ if (!is_creator_tournament($_SESSION['utilisateur'], $_SESSION['id_tournament'])
     $tournament = get_tournament_info($_SESSION['id_tournament']);
 }
 ?>
-<div id="nav-container"></div>
 <div id="page">
     <div class="main identification">
         <div class="identification-form sblock">
-            <form action="#" method="post">
+            <form action="../controleur/update_tournament_db.php" method="post">
             <h3>Modify Your Tournament</h3>
             <div class="text-center error">
-                <!-- ici mettre les codes codes erreurs de l'utilisateur qui se log -->
                 <span class="text-center field-validation-valid helper"></span>
         </div>
         <div class="form-group mini">
-            <!-- ici mettre les codes codes erreurs de l'utilisateur qui se log (email) -->
             <span class="text-center field-validation-valid helper"></span>
             <input placeholder="Name of the Tournament" value="<?php echo $tournament['nom_tournois'];?>" name="Tournament_Name" id="Tournament_Name" maxlength="50" required>
         </div>
@@ -48,7 +45,7 @@ if (!is_creator_tournament($_SESSION['utilisateur'], $_SESSION['id_tournament'])
         </div>
         <div class="captcha-placeholder">
         </div>
-        <input type="submit" class="button" value="Create">
+        <input type="submit" class="button" value="update your tournament">
         <div class="form-group text-center stay-connected">
         </div>
     </form>
