@@ -1,6 +1,7 @@
 <?php
 include_once('../controleur/action.php');
 
+//compare the different elements to update them if they are updated.
 function get_post_update(){
     $tournament = get_tournament_info($_SESSION['id_tournament']);
     if ($_POST['Tournament_Name'] != $tournament['nom_tournois']){
@@ -34,6 +35,7 @@ function get_post_update(){
     }
     if (check_time_format($time)){
         update_tournament($tournament_name, $desc, $image, $link, $time);
+        header('Location:../view/tournament.php?id=' . $_SESSION['id_tournament']);
     }
 }
 
