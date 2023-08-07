@@ -15,5 +15,10 @@ After that you should be on the index.php page
 
 Create an account and login with the account you have created
 
-The website is not working by now
-Its going to be fixed in the next weeks
+#What can you do by now ?
+You can create an account, sign in, create tournaments, create teams, start tournament, end tournament...
+
+To start a tournament you will need to create a team and register with your team and the players in your team.
+Its better if you create a tournament that requires only one person to play so you don't have to create other players.
+Also you can create players / teams directly in the database using root / MY_SQL_PASSWORD (you can find it in the docker-compose.yml file.
+
