@@ -69,6 +69,7 @@ if ($id > $last_id || $id <= 0) {
         // Afficher le contenu en fonction du statut du tournoi
         if (isset($status) && $status['status'] == 'incoming') {
           include_once('../model/sign_up.php');
+          echo '<a href="../view/new_tournament.php?id=' . $id . '&edit"><button class="button">update your tournament here</button></a>';
         } elseif (isset($status) && $status['status'] == 'underway') {
           echo '<span>Registration are closed</span>';
         } elseif (isset($status) && $status['status'] == 'over') {

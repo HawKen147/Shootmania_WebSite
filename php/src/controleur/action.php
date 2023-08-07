@@ -476,4 +476,24 @@ function print_teams($user, $id){
 	}
 }
 
+//check if the user is the creator of the tournament 
+function is_creator_tournament($user, $id_tournament){
+	$requete = "SELECT createur FROM tournois WHERE id_tournois = ? AND createur = ?";
+	$resultat = sql_request($requete, [$id_tournament, $user]);
+	if ($resultat){
+		$ligne = $resultat -> fetch(PDO::FETCH_ASSOC);
+		if ($ligne){
+			return $ligne;
+		}
+	}
+}
 
+//get the tournament name, url, image, time, description, createur, lien
+function get_tournament_info($id){
+	$requete = "SELECT * FROM tournois WHERE id_tournois = ?";
+	$resultat = sql_request($requete, [$id]);
+	if ($resultat) {
+		$ligne = $resultat -> fetch(PDO::FETCH_ASSOC);
+		return $ligne;
+	}
+}
