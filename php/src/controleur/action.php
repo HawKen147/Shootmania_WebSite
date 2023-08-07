@@ -84,8 +84,10 @@ function connecte_utilisateur($logins, $password){
 	$resultat = sql_request($requete, [$logins]);
 	if ($resultat){
 		$row = $resultat->fetch(PDO::FETCH_ASSOC);
-		if (password_verify($password, $row['mdp'])){
-			return true;
+		if ($row){
+			if (password_verify($password, $row['mdp'])){
+				return true;
+			}
 		}
 	}
 }
