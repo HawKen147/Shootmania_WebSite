@@ -1,18 +1,18 @@
 <?php
 include_once("../controleur/action.php");
 if (!isset($_SESSION)) {
-    header("Location://test-site/Site/php/view/index.php");
+    header("Location:../index.php");
 };
 
 if (est_admin() == false) {
-    header("Location://test-site/Site/php/view/home.php");
+    header("Location:../view/home.php");
 }
 ?>
 <!DOCTYPE html>
 <html>
 
 <head>
-    <?php include_once("header.php"); ?>
+    <?php include_once("../model/header.php"); ?>
 </head>
 
 <body>
@@ -27,9 +27,21 @@ if (est_admin() == false) {
     </header>
     <main class="site-content">
         <?php
-        include("nav.php");
+        include("../model/nav.php");
         ?>
-
+        <span class="erreur">
+        <?php
+        if (isset($_SESSION['add_admin'])) {
+            echo $_SESSION['add_admin'];
+            unset($_SESSION['add_admin']);
+        }
+        echo "<br>";
+        if (isset($_SESSION['del_admin'])) {
+            echo $_SESSION['del_admin'];
+            unset($_SESSION['del_admin']);
+        }
+        ?>
+        </span>
         <h3>Add an Administrator</h3>
         <form name="add-admin" action="/controleur/add_admin.php" method="post">
             <div class="form-group">
@@ -61,29 +73,27 @@ if (est_admin() == false) {
                     </div>
                 </div>
             </form>
-        <?php
-        if (isset($_SESSION['add_admin'])) {
-            echo $_SESSION['add_admin'];
-            unset($_SESSION['add_admin']);
-        }
-        echo "<br>";
-        if (isset($_SESSION['del_admin'])) {
-            echo $_SESSION['del_admin'];
-            unset($_SESSION['del_admin']);
-        }
-        ?>
         <br>
-
-        <?php
-        affiche_tournois();
-        ?>
+        <h4>Add a link</h4>
+        <span class="erreur">
+            <?php if (isset($_SESSION['link'])){ echo $_SESSION['link']; unset($_SESSION['link']);} ?>
+        </span>
+        <form action="../controleur/add_link.php" method="post">
+            <select name="media_type" id="" required>
+                <option value="">chose the type of the media</option>
+                <option value="discord">Discord</option>
+                <option value="media">Media</option>
+                <option value="youtube_channel">Youtube channel</option>
+                <option value="web_site">Web site</option>
+                <option value="ressources">Ressources</option>
+            </select>
+            <input type="text" maxlength="50" name="media_name" placeholder="Name of the media" require>
+            <input type="text" maxlength="50" name="link" placeholder="The link to access to this media (https://)" pattern="https://.*" required>
+            <input type="submit" value="send" class="button">
+        </form>
     </main>
     <footer class="site-footer">
-        <div class="down-page">
-            <div class="text-footer">
-                Made By HawKen
-            </div>
-        </div>
+        <?php include_once('../model/footer.php'); ?>
     </footer>
 </body>
 

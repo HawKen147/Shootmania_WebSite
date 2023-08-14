@@ -12,7 +12,7 @@ include_once("../controleur/action.php");
 <html>
 
 <head>
-    <?php include_once("header.php"); ?>
+    <?php include_once("../model/header.php"); ?>
 </head>
 
 <body>
@@ -28,7 +28,7 @@ include_once("../controleur/action.php");
 
     <main class="site-content">
         <?php
-        include("nav.php");
+        include("../model/nav.php");
         ?>
         <div id="page">
             <div class="main identification">
@@ -45,7 +45,7 @@ include_once("../controleur/action.php");
                             ?>
                         </span>
                         <div class="form-group mini">
-                            <input name="discord" placeholder="Your Discord Login" type="text" value="" id="discord" required>
+                            <input name="discord" placeholder="Your Discord Login" type="text" id="discord" required>
                         </div>
                         <input type="submit" class="button" value="Enter">
                     </form>

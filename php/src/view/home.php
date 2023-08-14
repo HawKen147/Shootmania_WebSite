@@ -13,7 +13,7 @@ est_admin();
 <html>
 
 <head>
-  <?php include_once("header.php"); ?>
+  <?php include_once("../model/header.php"); ?>
 </head>
 
 <body>
@@ -26,7 +26,7 @@ est_admin();
   </header>
   <main class="site-content">
     <?php
-    include("nav.php");
+    include("../model/nav.php");
     ?>
     <div class="user">
       <?php
@@ -37,12 +37,14 @@ est_admin();
     <div class="titre-h3">
       <h3> Upcoming Tournaments </h3>
     </div>
+    <span class="text-center field-validation-valid helper">
     <?php 
     if(isset($_SESSION['tournois'])){
       echo ($_SESSION['tournois']);
       unset($_SESSION['tournois']);
     }
     ?>
+    </span>
     <table>
       <thead>
         <tr>
@@ -75,13 +77,8 @@ est_admin();
       </tbody>
     </table>
   </main>
-  
-  <footer class="site-footer">
-    <div class="down-page">
-      <div class="text-footer">
-        Made By HawKen
-      </div>
-    </div>
+  <footer>
+    <?php include_once('../model/footer.php'); ?>
   </footer>
 </body>
 

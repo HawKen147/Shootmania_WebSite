@@ -12,7 +12,6 @@ function getAssociations() {
         const droppableID = droppable.id;
         const draggableElements = droppable.querySelectorAll(".draggable");
         const teamData = [];
-
         draggableElements.forEach((draggable) => {
             const teamName = draggable.getAttribute("data-team");
             teamData.push(teamName);
@@ -37,9 +36,8 @@ function saveAssociations() {
     xhr.onload = function() {
         if (xhr.status === 200) {
             const response = JSON.parse(xhr.responseText);
-            console.log(response);
             if(response['message'] === true){
-                window.location.href = '../view/tournament.php?' + resultat['id_tournament'];
+                window.location.href = '../view/tournament.php?id=' + response['id_tournament'];
             }
         } else {
             console.error('Erreur lors de la requête AJAX :', xhr.status);

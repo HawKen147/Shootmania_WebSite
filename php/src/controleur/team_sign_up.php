@@ -37,21 +37,6 @@ function sign_up_the_team($id_tournament, $id_team, $players){
     return $resultat;
 }
 
-//check if the players belongs to the team 
-//return true if the player is not a part of the team
-function check_player_team($id_team, $players){
-    foreach($players as $player){
-        $requete = "SELECT `login_player` FROM `player_teams` WHERE `id_player_teams` = ? AND `login_player` = ?";
-        $resultat = sql_request($requete, [$id_team, $player]);
-        $ligne['player'] = $resultat -> fetch(PDO::FETCH_ASSOC);
-        if ($ligne['player'] == null){
-            $_SESSION['err'] = "The player '" . $player . "' is not a team member";
-            return false;
-        }
-    }
-    return true;
-}
-
 //verifie si la team est pas deja inscrite
 //check if the team has not sign up already
 function check_signed_up_team($id_team, $id_tournament){

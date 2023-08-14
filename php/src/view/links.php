@@ -1,7 +1,7 @@
 <?php if (!isset($_SESSION)) {
   session_start();
   if (!isset($_SESSION["utilisateur"])) {
-    header("Location://test-site/Site/view/index.php");
+    header("Location:../view/index.php");
   }
 };
 
@@ -11,7 +11,13 @@ include_once("../controleur/action.php");
 <html>
 
 <head>
-  <?php include_once("header.php"); ?>
+  <?php include_once("../model/header.php"); 
+  $link_media =  get_media_link();
+  $link_discord = get_discord_link();
+  $link_ressource = get_ressource_link();
+  $link_youtube = get_youtube_link();
+  $link_web_site = get_web_site_link();
+  ?>
 </head>
 
 <body>
@@ -25,68 +31,64 @@ include_once("../controleur/action.php");
   </header>
   <main class="site-content">
     <?php
-    include("nav.php");
+    include("../model/nav.php");
     ?>
-    <div class="link">
-      <div class="link33">
-        <li>
+    <div class="link-container">
+      <div class="link link33">
           <h3> Web Sites</h3>
           <ul>
-            <li><a href="https://www.maniaplanet.com/">ManiaPlanet</a></li>
-            <li><a href="https://sm.mania-exchange.com/">ManiaExchange</a></li>
-            <li><a href="https://item.mania.exchange/">ItemExchange</a></li>
-            <li><a href="https://league.paragon-esports.com/">Paragon League</a></li>
-            <li><a href="https://speedball.the-dmark.com/stats/">SpeedBall Statistics</a></li>
+            <?php
+            while ($ligne = $link_web_site -> fetch(PDO::FETCH_ASSOC)){
+              echo "<li><a href=" . $ligne['link'] . "> " .  $ligne['media_name'] . "</a></li>";
+            }
+            ?>
           </ul>
+      </div>
+      <div class="link link33">
           <h3>Ressources</h3>
           <ul>
-            <li><a href="https://urlz.fr/hmYk">CrossHairs</a> & <a href="https://urlz.fr/hmYo">Zyix CrossHairs</a></li>
-            <li><a href="http://aurel.obstacle.ovh/wordpress/">Aurel's Blog</a></li>
-            <li><a href="https://doc.maniaplanet.com/">ManiaScript Documentation</a></li>
-            <li><a href="https://urlz.fr/hcw7">Custom Youtube Intro</a></li>
+          <?php
+            while ($ligne = $link_ressource -> fetch(PDO::FETCH_ASSOC)){
+              echo "<li><a href=" . $ligne['link'] . "> " .  $ligne['media_name'] . "</a></li>";
+            }
+            ?>
           </ul>
       </div>
-      <div class="link-ytub">
+        <div class="link link-ytub">
         <h3>Youtube Channels</h3>
         <ul>
-          <li><a href="https://www.youtube.com/channel/UCFuotbDEH95CdUzj5G8VBJw">Rstyle Channel</a></li>
-          <li><a href="https://www.youtube.com/c/sbville">Sbville Channel</a></li>
-          <li><a href="https://www.youtube.com/c/HAScrashedOfficial">Crash Channel</a></li>
-          <li><a href="https://www.youtube.com/channel/UCRoFW12O4pokjUw0oj_8m3g">Pixou Channel</a></li>
-          <li><a href="https://www.youtube.com/user/MissUkkepuk">Ukkepuk Channel</a></li>
-          <li><a href="https://www.youtube.com/user/aurelamckVIDS">Aurel Channel</a></li>
-          <li><a href="https://www.youtube.com/user/ilevelin">Ilevelin Channel</a></li>
-          <li><a href="https://www.youtube.com/channel/UCK47hRTy4H0wKPaaYtsif0g">Hype Channel</a></li>
-          <li><a href="https://www.youtube.com/channel/UCis6zqXsmS_LmrT8us0ILQA">Irae Channel</a></li>
-          <li><a href="https://www.youtube.com/channel/UCymN_1LLkQa16dICCI2T99g">Atria Channel</a></li>
+        <?php
+            while ($ligne = $link_youtube -> fetch(PDO::FETCH_ASSOC)){
+              echo "<li><a href=" . $ligne['link'] . "> " .  $ligne['media_name'] . "</a></li>";
+            }
+            ?>
         </ul>
       </div>
-      <div class="link2">
+      <div class="link link2">
         <h3> Discords</h3>
         <ul>
-          <li><a href="https://discord.gg/mhDPGXezA9">Obstacle Discord</a></li>
-          <li><a href="https://discord.gg/mWbmegdPjS">SpeedBall Discord</a></li>
-          <li><a href="https://discord.gg/XqTRSEEQ8R">ShootMania Esport Discord</a></li>
-          <li><a href="https://discord.gg/jkGkXFe358">Open Planet Discord</a></li>
-          <li><a href="https://discord.gg/VcT6TWkCG4">Aurel Discord</a></li>
-        </ul>
-        <h3>Medias</h3>
-        <ul>
-          <li><a href="https://www.instagram.com/shootmaniastorm/">Instagram</a></li>
-          <li><a href="https://www.facebook.com/ShootMania/">Facebook</a></li>
-          <li><a href="https://twitter.com/Shootmania">Official Twitter</a> & <a href="https://twitter.com/ShootmaniaS"> Shootmania Community Twitter</a></li>
+        <?php
+            while ($ligne = $link_discord -> fetch(PDO::FETCH_ASSOC)){
+              echo "<li><a href=" . $ligne['link'] . "> " .  $ligne['media_name'] . "</a></li>";
+            }
+            ?>
         </ul>
       </div>
-
+      <div class="link link2">
+      <h3>Medias</h3>
+        <ul>
+        <?php
+            while ($ligne = $link_media -> fetch(PDO::FETCH_ASSOC)){
+              echo "<li><a href=" . $ligne['link'] . "> " .  $ligne['media_name'] . "</a></li>";
+            }
+            ?>
+        </ul>
+      </div>
       </li>
     </div>
   </main>
   <footer class="site-footer">
-    <div class="down-page">
-      <div class="text-footer">
-        Made By HawKen
-      </div>
-    </div>
+    <?php  include_once('../model/footer.php'); ?>
   </footer>
 </body>
 

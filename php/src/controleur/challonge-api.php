@@ -9,13 +9,14 @@ global $api_key;
 $url_challonge = "https://HawKen147:" . $api_key . "@api.challonge.com/v1/tournaments";
 global $url_challonge;
 
+
 // URL de l'API de Challonge pour obtenir la liste des tournois
 // $tournament = "/speedball-speedballfuncup205.json";
 
 //function qui initialise la table
 function init_funcup (){
-    $url = "/speedball-speedballfuncup203.json";
-    $id = 203;
+    $url = "/speedball-speedballfuncup212.json";
+    $id = 212;
     $sql = "INSERT INTO `funcup`(`id_funcups`, `funcups`) VALUES (? , ?)";
     $resultat = sql_request($sql, [$id, $url]);
     if ($resultat){
@@ -45,9 +46,6 @@ function update_funcup($url){
     $resultat = sql_request($sql, [$id, $url, $old_id]);
     if ($resultat){
        test_url();
-    }
-    else {
-        var_dump($resultat);
     }
 }
 

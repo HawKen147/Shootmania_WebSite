@@ -11,7 +11,7 @@ include_once("../controleur/action.php");
 <html>
 
 <head>
-  <?php include_once("header.php"); ?>
+  <?php include_once("../model/header.php"); ?>
 </head>
 
 <body>
@@ -25,7 +25,7 @@ include_once("../controleur/action.php");
   </header>
   <main class="site-content">
     <?php
-    include("nav.php");
+    include("../model/nav.php");
     ?>
     <div class="colonne-droite">
       <div class="affiche-profile">

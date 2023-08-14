@@ -20,7 +20,7 @@ if (isset($_SESSION['recup_logins'])) {
 <html>
 
 <head>
-    <?php include_once("header.php"); ?>
+    <?php include_once("../model/header.php"); ?>
 </head>
 
 <body>

@@ -1,7 +1,7 @@
 <?php if (!isset($_SESSION)) {
   session_start();
   if (!isset($_SESSION["utilisateur"])) {
-    header("Location://test-site/Site/view/index.php");
+    header("Location:../index.php");
   }
 };
 
@@ -11,7 +11,7 @@ include_once("../controleur/action.php");
 <html>
 
 <head>
-  <?php include_once("header.php"); ?>
+  <?php include_once("../model/header.php"); ?>
 </head>
 
 <body>
@@ -26,56 +26,46 @@ include_once("../controleur/action.php");
   </header>
   <main class="site-content">
     <?php
-    include("nav.php");
+    include("../model/nav.php");
     ?>
     <div id="page">
       <div class="main identification">
-        <form action="/controleur/new_team.php" method="post">
+        <form action="../controleur/new_team.php" method="post">
           <h3>Create Your team Here</h3>
           <div class="text-center error">
-          <?php
+            <span class="text-center field-validation-valid helper">
+            <?php
             if (isset($_SESSION['err'])){
               echo $_SESSION['err'];
               unset($_SESSION['err']);
             }
           ?>
-            <!-- ici mettre les codes codes erreurs de l'utilisateur qui se log -->
-            <span class="text-center field-validation-valid helper">
             </span>
           </div>
           <div class="form-group mini">
-            <!-- ici mettre les codes codes erreurs de l'utilisateur qui se log (email) -->
-            <span class="text-center field-validation-valid helper">
-            </span>
             <input placeholder="Name of Your team" name="Team_name" id="Team_name" maxlength="50" required>
             <input type="url" pattern="https://.*" placeholder="Any Image of your team ?" name="Image_team" id="Image_team">
           </div>
           <input type="submit" class="button" value="Create your team">
         </form>
+        <h3>Your teams</h3>
+        <?php
+        $result = affiche_team_joueur();
+        if (isset($result)){
+           while ($ligne = $result->fetch(PDO::FETCH_ASSOC)) {
+            if ($ligne !='' && $ligne['login_player'] === $_SESSION["utilisateur"]){
+              $id = $ligne['id_teams'];
+              echo ( '<a href=team.php?id_teams=' . $id . '>' . $ligne['nom_team'] . '<br>' 
+              . '<br>' . '<img src=' .  $ligne['images'] . '>' . '</a>' . '<br>' .  '<br>'. '<br>');
+            }
+          }
+        };
+        ?>
       </div>
     </div>
-    <!-- affiche les teams ici -->
-    <?php
-    $result = affiche_team_joueur();
-    if (isset($result)){
-      while ($ligne = $result->fetch(PDO::FETCH_ASSOC)) {
-        if ($ligne !='' && $ligne['login_player'] === $_SESSION["utilisateur"]){
-          $id = $ligne['id_teams'];
-          echo ( '<a href=team.php?id_teams=' . $id . '>' . $ligne['nom_team'] . '<br>' 
-          . '<br>' . '<img src=' .  $ligne['images'] . '>' . '</a>' . '<br>' .  '<br>'. '<br>');
-        }
-      }
-    };
-    ?>
-  
-    </form>
   </main>
   <footer class="site-footer">
-    <div class="down-page">
-      <div class="text-footer">
-        Made By HawKen
-      </div>
-    </div>
+    <?php include_once('../model/footer.php'); ?>
   </footer>
 </body>
 </html>

@@ -9,16 +9,23 @@ require("BDD.php");
 ///// creer des divs puis rentrer les fonctions pour afficher les tournois /////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-//send a sql querry
+//send sql request to the DB
 function sql_request($requete, $parametres = []) {
-	$pdo = seConnecterBDD(); 
-	// Préparer la requête
-	$stmt = $pdo->prepare($requete);
-	// Exécuter la requête avec les paramètres fournis (s'il y en a)
-	$stmt->execute($parametres);
- 	// Renvoyer le résultat de la requête
-	return $stmt;
+    try {
+        $pdo = seConnecterBDD(); 
+        // Préparer la requête
+        $stmt = $pdo->prepare($requete);
+        // Exécuter la requête avec les paramètres fournis (s'il y en a)
+        $stmt->execute($parametres);
+        // Renvoyer le résultat de la requête
+        return $stmt;
+    } catch (PDOException $e) {
+        // Gérer les erreurs PDO ici
+        echo "Erreur SQL : " . $e->getMessage();
+        return false;
+    }
 }
+
 
 // verifie si l'utilisateur est deja dans la base de donnée
 function login_existe_dans_la_BDD($login){
@@ -243,6 +250,7 @@ function affiche_nom_tournois() {
 
 
 // verifie si l'utilisateur est un administrateur
+//check if the user is an admin
 function est_admin() {
 	$user = $_SESSION["utilisateur"];
 	$requete = "SELECT Administrator FROM `users` WHERE `logins` = ? "; 
@@ -320,13 +328,6 @@ function est_createur_tournois(){
 	return false;
 }
 
-// fonction qui supprime un tournois 
-function del_tournament($id_tournois){
- 	$requete = "DELETE FROM tournois WHERE `id_tournois` = ? ";
-	$resultat = sql_request($requete, [$id_tournois]);
-	return $resultat;
-}
-
 // affiche les equipes auxquels appartiens le joueur
 function affiche_team_joueur(){
 	$requete = "SELECT	`id_teams`,
@@ -360,7 +361,10 @@ function affiche_joueur_team(){
 	$id = htmlspecialchars($_GET['id_teams']);
 	$requete = "SELECT `login_player` FROM `player_teams` WHERE `id_player_teams` = ? ";
 	$resultat = sql_request($requete, [$id]);
-	return $resultat;
+	while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
+		$players[] = $ligne['login_player'];
+	  } 
+	return $players;
 }
 
 //ajoute un joueur dans une team et le createur quand il cree la team
@@ -387,11 +391,11 @@ function parse_the_team_invite($id_teams){
 }
 
 
-function parse_the_limit_date($name_team){
+function parse_the_limit_date($id_team){
 	$day = date('d');
 	$year = date('Y');
-	$end = md5($name_team . $day . $year);
-	return ($end);
+	$end = md5($id_team . $day . $year);
+	return $end;
 }
 
 
@@ -498,4 +502,98 @@ function get_tournament_info($id){
 		$ligne = $resultat -> fetch(PDO::FETCH_ASSOC);
 		return $ligne;
 	}
+}
+
+//recupere le nombre de teams inscritent, retourne vrai si il y a au moin 3 teams inscritent
+//get the number of registered teams, return true if there is 3 or more teams registered
+function get_number_registrered_teams($id_tournament){
+	$nb_teams = 0;
+	$requete = "SELECT DISTINCT id_team_tournois FROM `tournament_team_player` WHERE `id_tournois_tournois` = ? ";
+	$resultat = sql_request($requete, [$id_tournament]);
+	while($resultat -> fetch(PDO::FETCH_ASSOC)){
+		$nb_teams++;
+	}
+	return $nb_teams;
+}
+
+//check if the players belongs to the team 
+//return true if the player is not a part of the team
+function check_player_team($id_team, $players){
+    foreach($players as $player){
+        $requete = "SELECT `login_player` FROM `player_teams` WHERE `id_player_teams` = ? AND `login_player` = ?";
+        $resultat = sql_request($requete, [$id_team, $player]);
+        $ligne['player'] = $resultat -> fetch(PDO::FETCH_ASSOC);
+        if ($ligne['player'] == null){
+            $_SESSION['err'] = "The player '" . $player . "' is not a team member";
+            return false;
+        }
+    }
+    return true;
+}
+
+//add a player in the team
+function add_player_team($user, $invite_url, $id_team, $limit_url){
+	if (!check_player_team($id_team, [$user])){
+		$limit = parse_the_limit_date($id_team);
+		$invite = parse_the_team_invite($id_team);
+		if ($invite == $invite_url && $limit == $limit_url){
+			$requete = "INSERT INTO `player_teams`(`id_player_teams`, `login_player`) VALUES (?, ?)";
+			$resultat = sql_request($requete, [$id_team, $user]);
+			if ($resultat){
+				$_SESSION['err'] = 'You are now a part of the team';
+				header('Location:../view/team.php?id_teams=' . $id_team);
+				exit;
+			}
+		}
+		$_SESSION['err'] = 'You\'re already in the team';
+		header('Location:../view/team.php?id_teams=' . $id_team);
+		exit;
+	} 
+	$_SESSION['err'] = 'Impossible to add the player in the team, plz retry with a new link';
+	header('Location:../view/home.php');
+	exit;
+}
+	
+
+
+//check if the user is the creator of the team
+function is_team_creator($id_team, $user){
+	$requete = "SELECT `createur` FROM `teams` WHERE `id_teams` = ?";
+	$resultat = sql_request($requete, [$id_team]);
+	$ligne = $resultat -> fetch(PDO::FETCH_ASSOC);
+	if ($ligne['createur'] === $user){
+		return true;
+	}
+}
+
+
+//get the differents media 
+function get_media_link(){
+	$requete = "SELECT * FROM `links` WHERE `media_type` = 'media' ORDER BY `media_name`";
+	$resultat = sql_request($requete,[]);
+	return $resultat;
+}
+
+function get_discord_link(){
+	$requete = "SELECT * FROM `links` WHERE `media_type` = 'discord' ORDER BY `media_name`";
+	$resultat = sql_request($requete,[]);
+	return $resultat;
+}
+
+function get_ressource_link(){
+	$requete = "SELECT * FROM `links` WHERE `media_type` = 'ressources' ORDER BY `media_name`";
+	$resultat = sql_request($requete,[]);
+	return $resultat;
+}
+
+function get_web_site_link(){
+	$requete = "SELECT * FROM `links` WHERE `media_type` = 'web_site' ORDER BY `media_name`";
+	$resultat = sql_request($requete,[]);
+	return $resultat;
+}
+
+function get_youtube_link(){
+	$requete = "SELECT * FROM `links` WHERE `media_type` = 'youtube_channel' ORDER BY `media_name`";
+	$resultat = sql_request($requete,[]);
+	return $resultat;
 }

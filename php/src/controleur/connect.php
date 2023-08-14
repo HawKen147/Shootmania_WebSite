@@ -14,17 +14,17 @@ if (isset($_POST['login']) && isset($_POST['password'])){
     if (isset($_POST['link']) ){
         $link = $_POST['link'];
         if ($res === true){
-            $_SESSION["log"] = $logins;
+            $_SESSION["utilisateur"] = $logins;
              header('Location:../view/team.php'. $link);
         } else if (!$res){
             $_SESSION['log'] = 'Wrong password or login.';
-            header('Location:../view/index.php' . $link);
+            header('Location:.../index.php' . $link);
         }
     } else if ($res === true){
         $_SESSION["utilisateur"] = $logins;
         header('Location:../view/home.php');
     } else {
         $_SESSION['log'] = 'Wrong password or login.';
-        header('Location:../view/index.php');
+        header('Location:../index.php');
     }     
 };

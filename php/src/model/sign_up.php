@@ -6,7 +6,6 @@
     <span class="close">&times;</span>
     <div class="center">
       <h3>Chose your team</h3>
-
       <div>
         <form method="post" action="../controleur/team_sign_up.php">
           <select name="Team" id="Team" onchange="getSelectValue(this);">
@@ -45,5 +44,5 @@
     </div>
   </div>
 </div>
-</div>
 <script src="/JS/Boutton_sign_up.js"></script>
+<script src="../JS/modal.js"></script>

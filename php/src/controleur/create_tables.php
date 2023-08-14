@@ -138,6 +138,16 @@ function create_table_player_team(){
 	return $result;
 }
 
+//stock les liens pour la page links.php
+function create_table_links(){
+	$sql = "CREATE TABLE `links` 
+	(`media_type` VARCHAR(50) NOT NULL ,
+	 `link` VARCHAR(50) NOT NULL,
+	 `media_name` VARCHAR(50) NOT NULL)";
+	$result = sql_request_table_database($sql);
+	return $result;
+}
+
 // envoie les requetes de creations de tables / base de données
 function sql_request_table_database($sql){
 	// Se connecter au serveur MySQL (sans sélectionner de base de données pour le moment)
@@ -171,3 +181,4 @@ create_table_recuperation();
 create_table_tournament_status();
 create_table_tournament_result();
 create_table_player_team();
+create_table_links();

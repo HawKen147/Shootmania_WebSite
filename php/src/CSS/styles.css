@@ -570,59 +570,42 @@ footer{
   margin-top: 8px;
 }
 
+/*link page */
+.link-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 10px;
+}
 
-/* link page */
 .link {
-  margin-top: 100px;
-  height: 100%;
-  width: 100%;
-  display: table;
-
-}
-
-.link33{
-  width: 25%;
-  height: 100%;
-  float: right;
-  margin-right: 7.5%;
-}
-
-.link-ytub{
-  width: 20%;
-  float: right;
-  margin-right: 3%;
-  margin-left: 2%;
-}
-
-.link2{
-  display: table;
-  position: relative;
-  width: 25%;
-  height: 100%;
-  float: right;
+  background-color: #f2f2f2;
+  padding: 10px;
+  box-sizing: border-box;
+  flex: 1;
+  margin: 5px;
+  max-width: calc(33.33% - 10px); /* Trois colonnes par ligne */
 }
 
 .link h3 {
   margin-bottom: 10px;  
 }
 
-.link li {
-  list-style-type: none ;
+.link ul {
+  margin: 8px;
+  padding: 0;
+  list-style: none;
 }
 
 .link a {
   color: #470653;
   font-size: 23px;
   text-align: center;
+  display: block;
+  padding: 5px 0;
 }
 
-.link ul{
-  margin: 8px;
-  padding: 8px;
-  padding-bottom: 30px;
-}
-
-.link a:hover{
+.link a:hover {
   color: #E61414;
 }
 

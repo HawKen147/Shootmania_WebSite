@@ -7,7 +7,7 @@ include_once("../controleur/action.php");
 <html>
 
 <head>
-    <?php include_once("header.php"); ?>
+    <?php include_once("../model/header.php"); ?>
 </head>
 
 <body>
