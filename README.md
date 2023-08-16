@@ -1,7 +1,9 @@
 # Shootmania_WebSite
-A little project for the ShootMania community
+Here is a project for the Shootmania community
+You can find and try on this website http://shootmaniatournament.mywebcommunity.org/
+Or you can try it in gitpod
 
-## How to test the project ?
+## How to test the project on gitpod ?
 
 First, click on the button below
 
