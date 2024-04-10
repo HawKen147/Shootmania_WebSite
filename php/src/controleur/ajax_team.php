@@ -1,5 +1,5 @@
 <?php
-include_once("action.php");
+include_once("../controleur/action.php");
 
 
 if (isset($_POST['team'])) {

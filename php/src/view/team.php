@@ -49,7 +49,7 @@ if(isset($_SESSION['utilisateur']) && isset($_GET['invite']) && isset($_GET['id_
   <main class="site-content">
     <?php
     include("../model/nav.php");
-    if (isset($_GET['invite']) || $_SESSION['err']) {
+    if (isset($_GET['invite']) && $_SESSION['err']) {
       echo ($_SESSION['err']);
       unset ($_SESSION['err']);
     }

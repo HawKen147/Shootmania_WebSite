@@ -140,7 +140,7 @@ function create_table_player_team(){
 
 //stock les liens pour la page links.php
 function create_table_links(){
-	$sql = "CREATE TABLE `links` 
+	$sql = "CREATE TABLE IF NOT EXISTS `links` 
 	(`media_type` VARCHAR(50) NOT NULL ,
 	 `link` VARCHAR(50) NOT NULL,
 	 `media_name` VARCHAR(50) NOT NULL)";

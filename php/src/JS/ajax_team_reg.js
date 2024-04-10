@@ -1,4 +1,5 @@
 function getSelectValue(selectValue) {
+    console.log("je suis appelé js")
     /**On récupère l'élement html <select>*/
     var selVal = selectValue.value;
     makeRequest('../controleur/ajax_team.php', selVal);

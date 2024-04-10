@@ -2,6 +2,8 @@
 session_start();
 
 include_once("controleur/create_tables.php");
+#include_once("controleur/setup.php");
+
 if (isset($_GET['invite']) & isset($_GET['id_teams']) & isset($_GET['limit'])){
     $id_teams = htmlspecialchars($_GET['id_teams']);
     $invite = htmlspecialchars($_GET['invite']);
